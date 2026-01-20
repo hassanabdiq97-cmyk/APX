@@ -1,19 +1,16 @@
 import React from 'react';
-import './index.css'; // Assuming Tailwind is loaded via this or link in index.html in this preview env
+import type { Metadata } from 'next';
+import './app/globals.css';
 
-// In a real Next.js app, import fonts like this:
-// import { Inter, JetBrains_Mono } from 'next/font/google';
-// const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
-// const mono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-mono' });
-
-export const metadata = {
-  title: 'Apex Industrial | Schweizer Präzision für Instandhaltung',
+export const metadata: Metadata = {
+  title: 'Apex Industrial | Future Maintenance Switzerland',
   description: 'Ihr strategischer Partner für Instandhaltung, Retrofit und Notfall-Support in der Uhren- und Medizintechnik. Lokal verankert in Grenchen-Biel-Solothurn.',
   openGraph: {
     title: 'Apex Industrial | Future Maintenance Switzerland',
     description: 'CNC-Reparatur, Reinraum-Instandhaltung und Pikett-Service. 24/7 Support im Precision Cluster.',
     type: 'website',
     locale: 'de_CH',
+    images: [{ url: '/og-image.jpg' }], // Ensure you add an image to public/
   },
 };
 
@@ -23,19 +20,11 @@ export default function RootLayout({
   children?: React.ReactNode;
 }) {
   return (
-    // In Next.js, <html> and <body> would be here. 
-    // For this preview environment to work with the existing index.html, we render a fragment.
-    // Copy this structure for your Vercel deployment:
-    /*
-    <html lang="de-CH" className="scroll-smooth">
-      <body className="bg-slate-950 text-slate-100 antialiased selection:bg-safety selection:text-white overflow-x-hidden">
+    <div className="scroll-smooth dark">
+      <div className="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 antialiased selection:bg-safety selection:text-white overflow-x-hidden transition-colors duration-300 font-sans min-h-screen">
         <div className="bg-noise"></div>
         {children}
-      </body>
-    </html>
-    */
-    <>
-      {children}
-    </>
+      </div>
+    </div>
   );
 }

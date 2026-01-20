@@ -1,4 +1,6 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+'use client';
+
+import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { Language, Theme, Translations } from '../types';
 
 interface SettingsContextType {
@@ -50,7 +52,7 @@ const translations: Record<Language, Translations> = {
 
 const SettingsContext = createContext<SettingsContextType | undefined>(undefined);
 
-export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const SettingsProvider = ({ children }: { children?: ReactNode }) => {
   const [language, setLanguage] = useState<Language>('de');
   const [theme, setTheme] = useState<Theme>('dark');
 

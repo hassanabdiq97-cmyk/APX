@@ -1,0 +1,15 @@
+{
+  "regions": ["fra1"],
+  "framework": "nextjs",
+  "headers": [
+    {
+      "source": "/(.*).(woff2?|png|jpg|webp|avif)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    }
+  ]
+}
