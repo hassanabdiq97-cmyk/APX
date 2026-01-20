@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useRef, useState } from 'react';
 import { ChevronRight } from 'lucide-react';
 import { ServiceItem } from '../types';

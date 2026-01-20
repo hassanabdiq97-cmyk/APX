@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="de-CH" class="scroll-smooth">
+<html lang="de-CH" class="scroll-smooth dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,10 +7,19 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
+        darkMode: 'class',
         theme: {
           extend: {
             colors: {
               slate: {
+                50: '#f8fafc',
+                100: '#f1f5f9',
+                200: '#e2e8f0',
+                300: '#cbd5e1',
+                400: '#94a3b8',
+                500: '#64748b',
+                600: '#475569',
+                700: '#334155',
                 800: '#1e293b',
                 850: '#172033', // Custom intermediate
                 900: '#0f172a',
@@ -33,6 +42,7 @@
             },
             backgroundImage: {
               'grid-pattern': "linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px)",
+              'grid-pattern-light': "linear-gradient(to right, rgba(0, 0, 0, 0.03) 1px, transparent 1px), linear-gradient(to bottom, rgba(0, 0, 0, 0.03) 1px, transparent 1px)",
               'radial-highlight': "radial-gradient(circle at center, rgba(255, 51, 0, 0.15) 0%, transparent 70%)",
             },
             animation: {
@@ -59,7 +69,6 @@
       body {
         font-family: 'Inter', sans-serif;
         -webkit-font-smoothing: antialiased;
-        background-color: #020617;
       }
       
       /* Industrial Noise Texture */
@@ -71,6 +80,12 @@
         opacity: 0.03;
         background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
       }
+      
+      /* Adjust noise for light mode */
+      html:not(.dark) .bg-noise {
+        opacity: 0.05;
+        filter: invert(1);
+      }
 
       /* Custom Scrollbar */
       ::-webkit-scrollbar {
@@ -79,6 +94,10 @@
       ::-webkit-scrollbar-track {
         background: #020617; 
       }
+      html:not(.dark) ::-webkit-scrollbar-track {
+         background: #f1f5f9;
+      }
+
       ::-webkit-scrollbar-thumb {
         background: #334155; 
       }
@@ -101,12 +120,13 @@
     "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
     "react/": "https://esm.sh/react@^19.2.3/",
     "react": "https://esm.sh/react@^19.2.3",
-    "lucide-react": "https://esm.sh/lucide-react@^0.562.0"
+    "lucide-react": "https://esm.sh/lucide-react@^0.562.0",
+    "react-dom": "https://esm.sh/react-dom@^19.2.3"
   }
 }
 </script>
 </head>
-  <body class="bg-slate-950 text-slate-100 antialiased selection:bg-safety selection:text-white overflow-x-hidden">
+  <body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 antialiased selection:bg-safety selection:text-white overflow-x-hidden transition-colors duration-300">
     <div class="bg-noise"></div>
     <div id="root"></div>
   </body>

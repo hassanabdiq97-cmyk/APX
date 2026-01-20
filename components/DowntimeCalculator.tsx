@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState } from 'react';
 import { Calculator, Activity } from 'lucide-react';
 import { Button } from './Button';
