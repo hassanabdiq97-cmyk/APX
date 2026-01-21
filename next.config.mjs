@@ -10,7 +10,6 @@ const nextConfig = {
       },
     ],
   },
-  // Ensure we don't have static export issues if using API routes dynamically
   output: 'standalone',
 };
 
