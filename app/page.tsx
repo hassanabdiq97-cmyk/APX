@@ -55,25 +55,25 @@ export default function Home() {
         {/* 9. Karriere: Recruiting */}
         <CareerSection />
 
-        {/* 10. Trust Indicators: Sicherheit & Qualität */}
-        <section id="sicherheit" className="py-24 bg-slate-900 border-t border-white/5">
+        {/* 10. Trust Indicators: Sicherheit & Qualität - ADAPTIVE COLORS */}
+        <section id="sicherheit" className="py-24 bg-slate-200 dark:bg-slate-900 border-t border-slate-300 dark:border-white/5 transition-colors duration-300">
            <div className="container mx-auto px-4 max-w-4xl text-center">
-              <h2 className="text-2xl md:text-3xl font-black text-white mb-12">{t.trust_indicators.title}</h2>
+              <h2 className="text-2xl md:text-3xl font-black text-slate-900 dark:text-white mb-12">{t.trust_indicators.title}</h2>
               <div className="grid md:grid-cols-3 gap-8">
-                 <div className="bg-slate-950 p-6 border border-white/5 hover:border-safety/30 transition-colors group">
+                 <div className="bg-white dark:bg-slate-950 p-6 border border-slate-300 dark:border-white/5 hover:border-safety/30 transition-all duration-300 group shadow-sm hover:shadow-lg dark:shadow-none">
                     <ClipboardCheck className="mx-auto text-safety mb-4 group-hover:scale-110 transition-transform" size={32} />
-                    <h4 className="font-bold text-white mb-2">{t.trust_indicators.validated.title}</h4>
-                    <p className="text-xs text-slate-500">{t.trust_indicators.validated.desc}</p>
+                    <h4 className="font-bold text-slate-900 dark:text-white mb-2">{t.trust_indicators.validated.title}</h4>
+                    <p className="text-xs text-slate-600 dark:text-slate-500">{t.trust_indicators.validated.desc}</p>
                  </div>
-                 <div className="bg-slate-950 p-6 border border-white/5 hover:border-safety/30 transition-colors group">
+                 <div className="bg-white dark:bg-slate-950 p-6 border border-slate-300 dark:border-white/5 hover:border-safety/30 transition-all duration-300 group shadow-sm hover:shadow-lg dark:shadow-none">
                     <Ruler className="mx-auto text-safety mb-4 group-hover:scale-110 transition-transform" size={32} />
-                    <h4 className="font-bold text-white mb-2">{t.trust_indicators.laser.title}</h4>
-                    <p className="text-xs text-slate-500">{t.trust_indicators.laser.desc}</p>
+                    <h4 className="font-bold text-slate-900 dark:text-white mb-2">{t.trust_indicators.laser.title}</h4>
+                    <p className="text-xs text-slate-600 dark:text-slate-500">{t.trust_indicators.laser.desc}</p>
                  </div>
-                 <div className="bg-slate-950 p-6 border border-white/5 hover:border-safety/30 transition-colors group">
+                 <div className="bg-white dark:bg-slate-950 p-6 border border-slate-300 dark:border-white/5 hover:border-safety/30 transition-all duration-300 group shadow-sm hover:shadow-lg dark:shadow-none">
                     <ShieldCheck className="mx-auto text-safety mb-4 group-hover:scale-110 transition-transform" size={32} />
-                    <h4 className="font-bold text-white mb-2">{t.trust_indicators.discretion.title}</h4>
-                    <p className="text-xs text-slate-500">{t.trust_indicators.discretion.desc}</p>
+                    <h4 className="font-bold text-slate-900 dark:text-white mb-2">{t.trust_indicators.discretion.title}</h4>
+                    <p className="text-xs text-slate-600 dark:text-slate-500">{t.trust_indicators.discretion.desc}</p>
                  </div>
               </div>
            </div>
@@ -87,7 +87,7 @@ export default function Home() {
 
       {/* Mobile Sticky CTA */}
       <div className="fixed bottom-0 left-0 w-full z-50 md:hidden pointer-events-none">
-        <div className="bg-gradient-to-t from-slate-950 to-transparent pb-safe">
+        <div className="bg-gradient-to-t from-slate-950/90 to-transparent pb-safe pt-8">
           <a href="tel:+41321234567" className="pointer-events-auto flex items-center justify-center gap-3 bg-safety hover:bg-white hover:text-safety transition-colors w-full py-4 text-white font-black uppercase tracking-widest text-sm shadow-[0_0_30px_rgba(255,68,0,0.5)]">
              <span className="animate-pulse">●</span> PIKETT RUFEN
           </a>

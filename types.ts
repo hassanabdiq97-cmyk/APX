@@ -37,6 +37,7 @@ export interface Translations {
     services: string;
     industries: string;
     expertise: string;
+    career: string;
     emergency: string;
     status: string;
     location: string;
@@ -121,8 +122,13 @@ export interface Translations {
     badge: string;
     title: string;
     subtitle: string;
-    description: string;
-    perks: { title: string; desc: string; }[];
+    intro_title: string;
+    intro_text: string;
+    values: {
+      id: string;
+      title: string;
+      desc: string;
+    }[];
     cta_init: string;
     positions_title: string;
     no_position: string;

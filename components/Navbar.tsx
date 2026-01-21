@@ -16,7 +16,7 @@ export const Navbar: React.FC = () => {
       setIsScrolled(window.scrollY > 20);
       
       // Scroll Spy Logic
-      const sections = ['hero', 'leistungen', 'branchen', 'expertise', 'kontakt'];
+      const sections = ['hero', 'leistungen', 'branchen', 'expertise', 'karriere', 'kontakt'];
       for (const section of sections) {
         const element = document.getElementById(section);
         if (element) {
@@ -77,7 +77,8 @@ export const Navbar: React.FC = () => {
             {[
               { id: 'leistungen', label: t.nav.services }, 
               { id: 'branchen', label: t.nav.industries }, 
-              { id: 'expertise', label: t.nav.expertise }
+              { id: 'expertise', label: t.nav.expertise },
+              { id: 'karriere', label: t.nav.career }
             ].map((item) => (
               <button 
                 key={item.id} 
@@ -149,7 +150,8 @@ export const Navbar: React.FC = () => {
             {[
               { id: 'leistungen', label: t.nav.services }, 
               { id: 'branchen', label: t.nav.industries }, 
-              { id: 'expertise', label: t.nav.expertise }
+              { id: 'expertise', label: t.nav.expertise },
+              { id: 'karriere', label: t.nav.career }
             ].map((item) => (
               <button key={item.id} onClick={() => scrollTo(item.id)} className="text-left text-sm font-bold text-slate-600 dark:text-slate-300 hover:text-safety dark:hover:text-white hover:pl-2 transition-all uppercase tracking-widest border-b border-slate-200 dark:border-white/5 pb-4">
                 {item.label}

@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import { Timer, MapPin } from 'lucide-react';
 import { SectionHeader } from './SectionHeader';
@@ -7,11 +9,11 @@ export const RegionalExpertise: React.FC = () => {
   const { t } = useSettings();
 
   return (
-    <section id="expertise" className="py-32 bg-slate-900 border-y border-white/5 relative overflow-hidden">
+    <section id="expertise" className="py-32 bg-slate-100 dark:bg-slate-900 border-y border-slate-200 dark:border-white/5 relative overflow-hidden transition-colors duration-300">
          {/* Background Map Abstract */}
          <div className="absolute inset-0 opacity-10 pointer-events-none">
-             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] border border-white/5 rounded-full"></div>
-             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] border border-white/10 border-dashed rounded-full"></div>
+             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] border border-slate-900 dark:border-white/5 rounded-full"></div>
+             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] border border-slate-900 dark:border-white/10 border-dashed rounded-full"></div>
          </div>
 
          <div className="container mx-auto px-6 relative z-10">
@@ -21,43 +23,43 @@ export const RegionalExpertise: React.FC = () => {
                <div className="md:w-1/2">
                   <SectionHeader title={t.expertise.title} subtitle={t.expertise.subtitle} alignment="left" />
                   
-                  <h3 className="text-3xl md:text-4xl font-black text-white mt-2 mb-8 tracking-tight uppercase leading-none">
+                  <h3 className="text-3xl md:text-4xl font-black text-slate-900 dark:text-white mt-2 mb-8 tracking-tight uppercase leading-none">
                         {t.expertise.headline_part1} <br/>
                         <span className="text-transparent bg-clip-text bg-gradient-to-r from-safety to-slate-500">{t.expertise.headline_part2}</span>
                   </h3>
 
                   <div className="pl-6 border-l-2 border-safety/50 mb-10">
-                      <p className="text-slate-300 text-lg leading-relaxed font-light">
+                      <p className="text-slate-600 dark:text-slate-300 text-lg leading-relaxed font-light">
                          {t.expertise.description}
                       </p>
                   </div>
                   
                   <div className="space-y-4">
-                     <div className="flex gap-4 p-5 bg-slate-900/30 border border-white/5 rounded-xl hover:bg-slate-900/60 transition-colors group">
+                     <div className="flex gap-4 p-5 bg-white dark:bg-slate-900/30 border border-slate-200 dark:border-white/5 rounded-xl hover:border-safety/30 dark:hover:bg-slate-900/60 transition-colors group shadow-sm dark:shadow-none">
                         <div className="shrink-0 pt-1 text-safety group-hover:scale-110 transition-transform">
                            <Timer size={24} strokeWidth={1.5} />
                         </div>
                         <div>
-                           <strong className="text-white block text-sm mb-1 uppercase tracking-wide">{t.expertise.stat_time.title}</strong>
+                           <strong className="text-slate-900 dark:text-white block text-sm mb-1 uppercase tracking-wide">{t.expertise.stat_time.title}</strong>
                            <span className="text-xs text-slate-500">{t.expertise.stat_time.desc}</span>
                         </div>
                      </div>
                      
-                     <div className="flex gap-4 p-5 bg-slate-900/30 border border-white/5 rounded-xl hover:bg-slate-900/60 transition-colors group">
+                     <div className="flex gap-4 p-5 bg-white dark:bg-slate-900/30 border border-slate-200 dark:border-white/5 rounded-xl hover:border-safety/30 dark:hover:bg-slate-900/60 transition-colors group shadow-sm dark:shadow-none">
                         <div className="shrink-0 pt-1 text-safety group-hover:scale-110 transition-transform">
                            <MapPin size={24} strokeWidth={1.5} />
                         </div>
                         <div>
-                           <strong className="text-white block text-sm mb-1 uppercase tracking-wide">{t.expertise.stat_stock.title}</strong>
+                           <strong className="text-slate-900 dark:text-white block text-sm mb-1 uppercase tracking-wide">{t.expertise.stat_stock.title}</strong>
                            <span className="text-xs text-slate-500">{t.expertise.stat_stock.desc}</span>
                         </div>
                      </div>
                   </div>
                </div>
                
-               {/* Visual Radar Map Representation - Always dark/technical */}
+               {/* Visual Radar Map Representation - Always dark/technical even in light mode for contrast */}
                <div className="md:w-1/2 flex justify-center w-full perspective-[1000px]">
-                  <div className="relative w-80 h-80 md:w-96 md:h-96 bg-slate-950/80 rounded-full border border-white/10 shadow-2xl flex items-center justify-center backdrop-blur-sm transform md:rotate-y-12 transition-transform duration-700 hover:rotate-0">
+                  <div className="relative w-80 h-80 md:w-96 md:h-96 bg-slate-950/90 rounded-full border border-white/10 shadow-2xl flex items-center justify-center backdrop-blur-sm transform md:rotate-y-12 transition-transform duration-700 hover:rotate-0">
                      
                      {/* Radar Sweep Effect */}
                      <div className="absolute inset-0 rounded-full overflow-hidden opacity-50">

@@ -19,6 +19,7 @@ const de: Translations = {
     services: 'Leistungen',
     industries: 'Branchen',
     expertise: 'Expertise',
+    career: 'Karriere',
     emergency: 'Notfall-Pikett',
     status: 'SYSTEM STATUS: ONLINE',
     location: 'GRENCHEN // BIEL // SOLOTHURN',
@@ -135,14 +136,32 @@ const de: Translations = {
     stat_stock: { title: 'Ersatzteillager Lengnau', desc: 'Kritische Komponenten für Tornos & Fanuc direkt ab Lager verfügbar.' }
   },
   career: {
-    badge: 'Für Profis',
-    title: 'Kein Job für',
-    subtitle: 'Bastler.',
-    description: 'Gute Techniker sind Gold wert. Deshalb behandeln wir sie auch so. Bei Apex Industrial arbeitest du mit High-End Equipment an den anspruchsvollsten Maschinen der Schweiz.',
-    perks: [
-      { title: 'Premium Werkzeug', desc: 'Volle Hilti & Festool Ausstattung. iPad Pro.' },
-      { title: 'Service-Fahrzeug', desc: 'VW Transporter zur privaten Nutzung.' },
-      { title: 'Academy', desc: 'Bezahlte SPS-Kurse & Hersteller-Schulungen.' }
+    badge: 'Karriere',
+    title: 'Apex Culture',
+    subtitle: 'More than Mechanics',
+    intro_title: 'Wertschätzung ist unser Antrieb.',
+    intro_text: 'Ein überdurchschnittlicher Lohn ist bei uns die Basis, nicht das Verkaufsargument. Wir sind ein modernes, tolerantes Unternehmen, das auf gegenseitigen Respekt und gemeinsames Wachstum setzt. Bei uns bist du keine Nummer, sondern der Motor unseres Erfolgs.',
+    values: [
+      { 
+        id: 'vacation', 
+        title: '6 Wochen Ferien', 
+        desc: 'Wer hart arbeitet, muss gut regenerieren. Wir garantieren 30 Tage Urlaub für alle, ab dem ersten Jahr.' 
+      },
+      { 
+        id: 'education', 
+        title: 'Apex Academy', 
+        desc: 'Stillstand ist Rückschritt. Wir zahlen deine Weiterbildungen (SPS, CNC, Management) komplett.' 
+      },
+      { 
+        id: 'team', 
+        title: 'Zusammenhalt', 
+        desc: 'Wir wachsen zusammen. Jährlicher Team-Ausflug (letztes Jahr: Canyoning im Tessin) stärkt unseren Spirit.' 
+      },
+      { 
+        id: 'tolerance', 
+        title: 'Modern & Tolerant', 
+        desc: 'Wir leben Vielfalt. Deine Herkunft ist uns egal, deine Leidenschaft für Technik zählt.' 
+      }
     ],
     cta_init: 'Initiativ bewerben',
     positions_title: 'Open Positions',
@@ -163,7 +182,7 @@ const de: Translations = {
         workload: '100%',
         description: 'Du bist die Feuerwehr für unsere Kunden in der Uhrenindustrie. Wenn eine Tornos oder Bumotec steht, sorgst du dafür, dass die Späne wieder fliegen.',
         requirements: ['Ausbildung als Polymechaniker/Automatiker.', 'Erfahrung mit CNC-Maschinen.', 'Fanuc/Siemens Kenntnisse.'],
-        benefits: ['Top Fahrzeug (privat nutzbar).', 'Hilti/Festool Werkzeug.', 'Flexible Startzeiten.']
+        benefits: ['6 Wochen Ferien.', 'Top Fahrzeug zur Privatnutzung.', 'Bezahlte Weiterbildung.']
       },
       {
         id: 'retro-auto',
@@ -172,13 +191,13 @@ const de: Translations = {
         workload: '80-100%',
         description: 'Du hauchst alten Maschinen neues Leben ein. Du entwickelst neue Steuerungskonzepte und integrierst IoT-Lösungen.',
         requirements: ['Automatiker EFZ.', 'EPLAN Kenntnisse.', 'SPS-Programmierung (TIA).'],
-        benefits: ['Moderne Werkstatt.', 'Wenig Reisetätigkeit.', '5 Wochen Ferien.']
+        benefits: ['Flexible Arbeitszeiten.', 'Moderner Arbeitsplatz.', 'Team-Events.']
       }
     ]
   },
   trust_indicators: {
     title: 'VERTRAUEN DURCH EXPERTISE',
-    validated: { title: 'Validierte Berichte', desc: 'Digitale Service-Reports, direkt verwendbar für Ihre QM-Dokumentation.' },
+    validated: { title: 'Rapports Validés', desc: 'Digitale Service-Reports, direkt verwendbar für Ihre QM-Dokumentation.' },
     laser: { title: 'Laser-Vermessung', desc: 'Einsatz modernster Interferometer zur geometrischen Abnahme.' },
     discretion: { title: 'Discrétion', desc: 'Wir arbeiten in den sensibelsten Bereichen. Ihre IP ist sicher.' }
   },
@@ -222,6 +241,7 @@ const fr: Translations = {
     services: 'Services',
     industries: 'Secteurs',
     expertise: 'Expertise',
+    career: 'Carrière',
     emergency: 'Urgence 24/7',
     status: 'ÉTAT SYSTÈME: EN LIGNE',
     location: 'GRENCHEN // BIENNE // SOLEURE',
@@ -335,17 +355,35 @@ const fr: Translations = {
     headline_part2: 'Nous sommes déjà là.',
     description: 'Notre QG à Lengnau est stratégiquement placé. Nous atteignons chaque client du cluster Grenchen-Bienne en moins de 20 minutes. Ce n\'est pas du marketing, c\'est de la géographie.',
     stat_time: { title: 'Temps de réaction minimal', desc: 'Arrivée garantie dans la fenêtre SLA.' },
-    stat_stock: { title: 'Stock pièces Lengnau', desc: 'Composants critiques pour Tornos & Fanuc disponibles.' }
+    stat_stock: { title: 'Stock pièces Lengnau', desc: 'Composants critiques pour Tornos & Fanuc direkt ab Lager verfügbar.' }
   },
   career: {
-    badge: 'Pour les Pros',
-    title: 'Pas un job pour',
-    subtitle: 'Bricoleurs.',
-    description: 'Les bons techniciens valent de l\'or. Chez Apex Industrial, vous travaillez avec un équipement haut de gamme sur les machines les plus exigeantes.',
-    perks: [
-      { title: 'Outillage Premium', desc: 'Équipement Hilti & Festool complet. iPad Pro.' },
-      { title: 'Véhicule Service', desc: 'VW Transporter pour usage privé.' },
-      { title: 'Academy', desc: 'Cours API & formations constructeurs payés.' }
+    badge: 'Carrière',
+    title: 'Culture Apex',
+    subtitle: 'Plus que de la mécanique',
+    intro_title: 'L\'estime est notre moteur.',
+    intro_text: 'Un salaire supérieur à la moyenne est la base chez nous, pas l\'argument de vente. Nous sommes une entreprise moderne et tolérante qui mise sur le respect mutuel et la croissance commune. Chez nous, tu n\'es pas un numéro, mais le moteur de notre succès.',
+    values: [
+      { 
+        id: 'vacation', 
+        title: '6 Semaines Vacances', 
+        desc: 'Celui qui travaille dur doit bien récupérer. Nous garantissons 30 jours de congé pour tous.' 
+      },
+      { 
+        id: 'education', 
+        title: 'Apex Academy', 
+        desc: 'Nous payons tes formations continues (API, CNC, Management) intégralement.' 
+      },
+      { 
+        id: 'team', 
+        title: 'Esprit d\'Équipe', 
+        desc: 'Nous grandissons ensemble. Sortie d\'équipe annuelle (l\'an dernier : Canyoning au Tessin).' 
+      },
+      { 
+        id: 'tolerance', 
+        title: 'Moderne & Tolérant', 
+        desc: 'Nous vivons la diversité. Ton origine nous est égale, ta passion pour la technique compte.' 
+      }
     ],
     cta_init: 'Candidature spontanée',
     positions_title: 'Postes Ouverts',
@@ -366,7 +404,7 @@ const fr: Translations = {
         workload: '100%',
         description: 'Vous êtes le pompier pour nos clients horlogers. Quand une Tornos s\'arrête, vous faites en sorte que les copeaux volent à nouveau.',
         requirements: ['Polymécanicien/Automaticien.', 'Expérience machines CNC.', 'Connaissances Fanuc/Siemens.'],
-        benefits: ['Véhicule top (usage privé).', 'Outillage Hilti/Festool.', 'Horaires flexibles.']
+        benefits: ['6 semaines de vacances.', 'Véhicule top (usage privé).', 'Formation payée.']
       },
       {
         id: 'retro-auto',
@@ -375,7 +413,7 @@ const fr: Translations = {
         workload: '80-100%',
         description: 'Vous redonnez vie aux vieilles machines. Vous développez de nouveaux concepts de commande et intégrez des solutions IoT.',
         requirements: ['CFC Automaticien.', 'Connaissances EPLAN.', 'Programmation API (TIA).'],
-        benefits: ['Atelier moderne.', 'Peu de déplacements.', '5 semaines de vacances.']
+        benefits: ['Horaires flexibles.', 'Atelier moderne.', 'Événements d\'équipe.']
       }
     ]
   },
