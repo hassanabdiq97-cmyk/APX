@@ -3,7 +3,7 @@ import { ApexPreview } from '../components/ApexPreview';
 
 export default function Home() {
   return (
-    <main className="flex flex-col min-h-screen">
+    <main className="flex-grow w-full">
       <ApexPreview />
     </main>
   );

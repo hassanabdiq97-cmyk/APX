@@ -24,9 +24,9 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: 'APX Industrial | Instandhaltung Grenchen-Biel-Solothurn',
-  description: 'Spezialisiert auf CNC-Reparatur, Reinraum-Instandhaltung und 24/7 Pikett-Service für die Uhrenindustrie und Medtech. Standort: Lengnau.',
-  keywords: ['Industriemontage Solothurn', 'Instandhaltung Biel', 'CNC Service Grenchen', 'APX Industrial'],
+  title: 'APX Industrial | High-Performance Instandhaltung',
+  description: 'Premium Partner für CNC-Reparatur und Reinraum-Instandhaltung. 24/7 Pikett für die Schweizer Uhrenindustrie und Medtech.',
+  keywords: ['Industriemontage', 'Instandhaltung Schweiz', 'CNC Service', 'APX Industrial'],
   icons: {
     icon: '/favicon.ico',
   },
@@ -41,9 +41,10 @@ export default function RootLayout({
     <html lang="de-CH" className={`scroll-smooth dark ${inter.variable} ${jetbrainsMono.variable}`}>
       <body className="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 antialiased selection:bg-safety selection:text-white font-sans min-h-screen overflow-x-hidden">
         <Providers>
-          {/* Global Noise Texture for Industrial Feel */}
+          {/* Global Noise Overlay for Industrial Texture */}
           <div className="bg-noise fixed inset-0 z-0 pointer-events-none opacity-[0.03]"></div>
-          <div className="relative z-10">
+          
+          <div className="relative z-10 flex flex-col min-h-screen">
             {children}
           </div>
         </Providers>
