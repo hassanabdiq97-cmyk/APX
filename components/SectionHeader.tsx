@@ -4,7 +4,7 @@ interface SectionHeaderProps {
   title: string;
   subtitle: string;
   alignment?: 'left' | 'center';
-  dark?: boolean; // Kept for API compatibility, but usually redundant in dark theme
+  dark?: boolean; // Kept for API compatibility
 }
 
 export const SectionHeader: React.FC<SectionHeaderProps> = ({ 
@@ -26,15 +26,15 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
             <div className="w-20 h-[1px] bg-gradient-to-r from-safety to-transparent"></div>
         </div>
         
-        <h2 className="text-3xl md:text-5xl font-black text-white uppercase tracking-tight leading-none mb-2">
+        <h2 className="text-3xl md:text-5xl font-black text-slate-900 dark:text-white uppercase tracking-tight leading-none mb-2 transition-colors">
             {title}
         </h2>
         
         {/* Decorative elements under title */}
         <div className="flex gap-1 mt-2">
-            <div className="w-2 h-1 bg-slate-700"></div>
-            <div className="w-2 h-1 bg-slate-700"></div>
-            <div className="w-12 h-1 bg-slate-800"></div>
+            <div className="w-2 h-1 bg-slate-300 dark:bg-slate-700"></div>
+            <div className="w-2 h-1 bg-slate-300 dark:bg-slate-700"></div>
+            <div className="w-12 h-1 bg-slate-400 dark:bg-slate-800"></div>
         </div>
       </div>
     </div>

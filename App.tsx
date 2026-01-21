@@ -6,6 +6,7 @@ import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { DowntimeCalculator } from './components/DowntimeCalculator';
 import { Services } from './components/Services';
+import { Industries } from './components/Industries';
 import { RegionalExpertise } from './components/RegionalExpertise';
 import { ContactForm } from './components/ContactForm';
 import { Footer } from './components/Footer';
@@ -33,19 +34,22 @@ function App() {
           {/* 4. Core Services */}
           <Services />
 
-          {/* 5. Service Flow */}
+          {/* 5. Industries (NEW) */}
+          <Industries />
+
+          {/* 6. Service Flow */}
           <ServiceFlow />
 
-          {/* 6. Value Proposition / Downtime Calculator */}
+          {/* 7. Value Proposition / Downtime Calculator */}
           <DowntimeCalculator />
 
-          {/* 7. Regional Advantage & Industries */}
+          {/* 8. Regional Advantage & Industries */}
           <RegionalExpertise />
 
-          {/* 8. Career */}
+          {/* 9. Career */}
           <CareerSection />
 
-          {/* 9. Trust Indicators */}
+          {/* 10. Trust Indicators */}
           <section id="sicherheit" className="py-24 bg-slate-900 border-t border-white/5">
              <div className="container mx-auto px-4 max-w-4xl text-center">
                 <h2 className="text-2xl md:text-3xl font-black text-white mb-12">VERTRAUEN DURCH EXPERTISE</h2>
@@ -69,11 +73,11 @@ function App() {
              </div>
           </section>
 
-          {/* 10. Contact / Lead Gen */}
+          {/* 11. Contact / Lead Gen */}
           <ContactForm />
         </main>
 
-        {/* 11. Footer */}
+        {/* 12. Footer */}
         <Footer />
 
         {/* Sticky Mobile Emergency Button */}

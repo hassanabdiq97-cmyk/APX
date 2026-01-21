@@ -4,50 +4,121 @@
 
 @layer base {
   body {
-    @apply antialiased;
+    @apply antialiased text-slate-600 bg-slate-50 dark:text-slate-400 dark:bg-slate-950 transition-colors duration-300;
     -webkit-font-smoothing: antialiased;
+    font-family: var(--font-inter);
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply text-slate-900 dark:text-white tracking-tight transition-colors duration-300;
+  }
+  /* Lighthouse Optimization: Ensure sufficient contrast for selection */
+  ::selection {
+    @apply bg-safety text-white;
   }
 }
 
-/* Industrial Noise Texture */
+/* Premium Noise Texture */
 .bg-noise {
   position: fixed;
   top: 0; left: 0; width: 100vw; height: 100vh;
   pointer-events: none;
-  z-index: 50;
-  opacity: 0.03;
+  z-index: 0;
+  opacity: 0.04;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
 }
 
-/* Adjust noise for light mode */
-html:not(.dark) .bg-noise {
-  opacity: 0.05;
-  filter: invert(1);
+/* Technical Grid Pattern - Unified Background */
+.bg-tech-grid {
+  background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+  linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
 }
 
-/* Custom Scrollbar */
-::-webkit-scrollbar {
-  width: 6px;
-}
-::-webkit-scrollbar-track {
-  background: #020617; 
-}
-html:not(.dark) ::-webkit-scrollbar-track {
-    background: #f1f5f9;
+/* --- OPTIMIZED INDUSTRIAL SLIDER (High Visibility) --- */
+input[type=range] {
+  -webkit-appearance: none;
+  @apply w-full bg-transparent cursor-pointer focus:outline-none rounded-lg;
+  height: 32px; /* Container height */
 }
 
-::-webkit-scrollbar-thumb {
-  background: #334155; 
+/* The Track - Transparent so we can show the gradient fill on the input itself */
+input[type=range]::-webkit-slider-runnable-track {
+  @apply w-full h-3 rounded-sm cursor-pointer;
+  background: transparent; 
+  border: none;
 }
-::-webkit-scrollbar-thumb:hover {
-  background: #FF3300; 
+input[type=range]::-moz-range-track {
+  @apply w-full h-3 rounded-sm cursor-pointer;
+  background: transparent;
+  border: none;
 }
 
-/* Glass Panel Effect */
+/* The Thumb (Handle) - White for high contrast on both fill and empty track */
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  @apply h-8 w-6 bg-white shadow-[0_2px_10px_rgba(0,0,0,0.5)] transition-transform duration-150 border-2 border-safety rounded-sm;
+  margin-top: -10px; /* Aligns thumb center to track center (Track 12px, Thumb 32px -> diff 20px / 2 = 10px) */
+  /* Grip lines visual */
+  background-image: repeating-linear-gradient(
+    90deg,
+    transparent,
+    transparent 2px,
+    #e2e8f0 2px,
+    #e2e8f0 3px
+  );
+  background-position: center;
+  background-size: 60% 50%;
+  background-repeat: no-repeat;
+}
+
+input[type=range]::-moz-range-thumb {
+  @apply h-8 w-6 bg-white shadow-[0_2px_10px_rgba(0,0,0,0.5)] transition-transform duration-150 border-2 border-safety rounded-sm;
+  border: 2px solid #FF3300; /* Explicit for FF */
+  background-image: repeating-linear-gradient(
+    90deg,
+    transparent,
+    transparent 2px,
+    #e2e8f0 2px,
+    #e2e8f0 3px
+  );
+  background-position: center;
+  background-size: 60% 50%;
+  background-repeat: no-repeat;
+}
+
+/* Hover & Active States for Thumb */
+input[type=range]:hover::-webkit-slider-thumb {
+  @apply scale-110 shadow-xl;
+  border-color: #FF5500;
+}
+input[type=range]:active::-webkit-slider-thumb {
+  @apply scale-100 bg-safety border-white cursor-grabbing;
+  background-image: none;
+}
+
+
+/* Glass Panel Utilities */
 .glass-panel {
-  background: rgba(15, 23, 42, 0.4);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  @apply bg-white/60 dark:bg-slate-900/50 backdrop-blur-md border border-slate-200 dark:border-white/5 shadow-2xl;
+}
+
+.glass-nav {
+  @apply bg-slate-50/90 dark:bg-slate-950/80 backdrop-blur-lg border-b border-slate-200 dark:border-white/5 shadow-sm dark:shadow-none;
+}
+
+/* Custom Scrollbar for Desktop */
+@media (min-width: 768px) {
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    @apply bg-slate-100 dark:bg-slate-950;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-slate-300 dark:bg-slate-700;
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #FF3300; 
+  }
 }

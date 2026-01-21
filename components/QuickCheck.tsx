@@ -1,66 +1,90 @@
 'use client';
 
 import React from 'react';
-import { ClipboardList, Smartphone, Camera, AlertOctagon } from 'lucide-react';
+import { AlertTriangle, ArrowRight } from 'lucide-react';
 import { Button } from './Button';
+import { useSettings } from '../contexts/SettingsContext';
 
 export const QuickCheck: React.FC = () => {
+  const { t } = useSettings();
+
   return (
-    <section id="quickcheck" className="bg-slate-950 border-y border-white/5 py-16 relative">
-      <div className="container mx-auto px-4 md:px-6">
-        <div className="bg-slate-900 border border-safety/20 p-8 md:p-12 relative overflow-hidden">
-          {/* Background Warning Stripe */}
-          <div className="absolute top-0 right-0 w-32 h-32 bg-safety/5 -rotate-45 transform translate-x-16 -translate-y-16 pointer-events-none"></div>
+    <section id="quickcheck" className="bg-[#0B1120] py-24 relative overflow-hidden">
+      
+      {/* Background Pattern */}
+      <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:20px_20px] opacity-20"></div>
+      
+      <div className="container mx-auto px-6 relative z-10">
+        <div className="flex flex-col lg:flex-row gap-8 lg:gap-16 items-stretch">
+          
+          {/* Left Column: Instructions */}
+          <div className="lg:w-1/2 flex flex-col justify-center">
+             <div className="flex items-center gap-4 mb-8">
+                <div className="w-12 h-12 rounded-lg bg-safety/10 border border-safety/20 flex items-center justify-center shrink-0">
+                   <AlertTriangle className="text-safety" size={24} />
+                </div>
+                <h2 className="text-3xl md:text-4xl font-black text-white uppercase tracking-tight leading-none">
+                   {t.quickcheck.title}
+                </h2>
+             </div>
+             
+             <div className="pl-2 border-l-2 border-slate-800 mb-10">
+                <p className="text-slate-400 text-base md:text-lg leading-relaxed pl-6">
+                   {t.quickcheck.description}
+                </p>
+             </div>
 
-          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
-            <div className="md:w-1/2">
-              <div className="flex items-center gap-3 mb-4">
-                <AlertOctagon className="text-safety animate-pulse" size={24} />
-                <h3 className="text-2xl font-black text-white uppercase tracking-tight">
-                  Notfall Quick-Check
-                </h3>
-              </div>
-              <p className="text-slate-400 text-sm mb-6 max-w-md">
-                Damit unser Pikett-Techniker sofort die richtigen Ersatzteile einpacken kann:
-                Bitte halten Sie diese 3 Informationen bereit, <strong>bevor</strong> Sie anrufen.
-              </p>
-              
-              <div className="space-y-4">
-                <div className="flex items-start gap-4">
-                   <div className="w-8 h-8 rounded bg-slate-950 border border-white/10 flex items-center justify-center shrink-0 text-white font-mono font-bold">1</div>
-                   <div>
-                      <strong className="text-white block text-sm">Maschinen-Typ & Seriennummer</strong>
-                      <span className="text-xs text-slate-500">Finden Sie auf dem Typenschild (meist Rückseite/Schaltschrank).</span>
-                   </div>
-                </div>
-                <div className="flex items-start gap-4">
-                   <div className="w-8 h-8 rounded bg-slate-950 border border-white/10 flex items-center justify-center shrink-0 text-white font-mono font-bold">2</div>
-                   <div>
-                      <strong className="text-white block text-sm">Fehlercode / Display-Meldung</strong>
-                      <span className="text-xs text-slate-500">Notieren Sie den exakten Code (z.B. "Error 402 Axis Z").</span>
-                   </div>
-                </div>
-                <div className="flex items-start gap-4">
-                   <div className="w-8 h-8 rounded bg-slate-950 border border-white/10 flex items-center justify-center shrink-0 text-white font-mono font-bold">3</div>
-                   <div>
-                      <strong className="text-white block text-sm">Foto der Situation</strong>
-                      <span className="text-xs text-slate-500">Machen Sie ein kurzes Foto vom Schaden/Display für WhatsApp/Mail.</span>
-                   </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="md:w-1/2 flex flex-col items-center justify-center bg-slate-950 border border-white/5 p-8 w-full text-center">
-               <Smartphone size={48} className="text-slate-600 mb-4" />
-               <div className="text-xs font-mono text-slate-500 uppercase tracking-widest mb-2">Pikett-Line 24/7</div>
-               <a href="tel:+41321234567" className="text-3xl md:text-4xl font-black text-safety hover:text-white transition-colors mb-6 block">
-                 032 123 45 67
-               </a>
-               <Button onClick={() => document.getElementById('kontakt')?.scrollIntoView({behavior: 'smooth'})}>
-                 Digitale Störungsmeldung
-               </Button>
-            </div>
+             <div className="space-y-4">
+                {t.quickcheck.items.map((item) => (
+                  <div key={item.id} className="flex items-center p-5 bg-[#141b2d] border border-white/5 rounded-sm hover:border-white/20 transition-all group">
+                     <span className="text-4xl font-black text-slate-800 mr-6 group-hover:text-slate-700 transition-colors select-none font-mono tracking-tighter w-16 text-center">{item.id}</span>
+                     <div>
+                        <h4 className="text-white font-bold uppercase tracking-wider text-sm mb-1 group-hover:text-safety transition-colors">{item.title}</h4>
+                        <p className="text-slate-500 text-xs font-mono">{item.desc}</p>
+                     </div>
+                  </div>
+                ))}
+             </div>
           </div>
+
+          {/* Right Column: Emergency Card (Matching Image) */}
+          <div className="lg:w-1/2">
+             <div className="h-full bg-[#050912] border border-white/10 rounded-lg p-8 md:p-12 flex flex-col items-center justify-center text-center relative shadow-2xl">
+                
+                {/* Decoration Dots */}
+                <div className="absolute top-6 right-6 flex gap-1">
+                   <div className="w-1 h-1 bg-slate-700 rounded-full"></div>
+                   <div className="w-1 h-1 bg-slate-700 rounded-full"></div>
+                   <div className="w-1 h-1 bg-slate-700 rounded-full"></div>
+                </div>
+
+                {/* Phone Icon */}
+                <div className="mb-6 opacity-80">
+                   <div className="w-12 h-20 border-2 border-slate-700 rounded-lg flex justify-center pt-2">
+                      <div className="w-1 h-1 bg-slate-700 rounded-full"></div>
+                   </div>
+                </div>
+
+                <span className="text-xs font-mono font-bold text-slate-500 uppercase tracking-[0.3em] mb-4">
+                   {t.quickcheck.call_cta}
+                </span>
+
+                <a href="tel:+41321234567" className="text-5xl md:text-6xl font-black text-safety tracking-tighter hover:text-white transition-colors mb-10 block">
+                   032 123 45 67
+                </a>
+
+                <Button 
+                   fullWidth 
+                   size="lg" 
+                   onClick={() => document.getElementById('kontakt')?.scrollIntoView({behavior: 'smooth'})}
+                   className="!bg-safety !text-white hover:!bg-white hover:!text-safety border-none !uppercase !font-black !tracking-widest"
+                >
+                   {t.quickcheck.digital_cta} <ArrowRight size={18} className="ml-2" />
+                </Button>
+
+             </div>
+          </div>
+
         </div>
       </div>
     </section>

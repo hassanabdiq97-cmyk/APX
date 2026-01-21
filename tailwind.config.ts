@@ -22,43 +22,34 @@ const config: Config = {
           600: '#475569',
           700: '#334155',
           800: '#1e293b',
-          850: '#172033', // Custom intermediate
+          850: '#172033', 
           900: '#0f172a',
           950: '#020617', 
         },
         safety: {
-          DEFAULT: '#FF3300', // International Safety Orange
+          DEFAULT: '#FF3300', 
           500: '#FF3300',
           glow: '#FF5500',
           dim: '#991b00',
         },
-        tech: {
-          border: 'rgba(255, 255, 255, 0.1)',
-          surface: 'rgba(255, 255, 255, 0.03)',
-        }
       },
       fontFamily: {
-        sans: ['var(--font-inter)', 'system-ui', 'sans-serif'],
+        sans: ['var(--font-inter)', 'system-ui', '-apple-system', 'sans-serif'],
         mono: ['var(--font-jetbrains)', 'monospace'],
       },
       backgroundImage: {
         'grid-pattern': "linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px)",
-        'grid-pattern-light': "linear-gradient(to right, rgba(0, 0, 0, 0.03) 1px, transparent 1px), linear-gradient(to bottom, rgba(0, 0, 0, 0.03) 1px, transparent 1px)",
-        'radial-highlight': "radial-gradient(circle at center, rgba(255, 51, 0, 0.15) 0%, transparent 70%)",
+        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+        'glass': 'linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.00) 100%)',
       },
       animation: {
-        'pulse-fast': 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-        'scanline': 'scanline 8s linear infinite',
-        'marquee': 'marquee 25s linear infinite',
+        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        'float': 'float 6s ease-in-out infinite',
       },
       keyframes: {
-        scanline: {
-          '0%': { transform: 'translateY(-100%)' },
-          '100%': { transform: 'translateY(100%)' },
-        },
-        marquee: {
-          '0%': { transform: 'translateX(0%)' },
-          '100%': { transform: 'translateX(-100%)' },
+        float: {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-10px)' },
         }
       }
     },

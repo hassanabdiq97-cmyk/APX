@@ -1,50 +1,44 @@
+'use client';
+
 import React from 'react';
 import { Phone, Search, Wrench, CheckCircle2 } from 'lucide-react';
 import { SectionHeader } from './SectionHeader';
+import { useSettings } from '../contexts/SettingsContext';
+
+const icons = [Phone, Search, Wrench];
 
 export const ServiceFlow: React.FC = () => {
-  const steps = [
-    {
-      icon: Phone,
-      title: "1. Meldung",
-      desc: "Sie melden die Störung (Tel/Online). Unser Dispatcher priorisiert sofort nach Dringlichkeit."
-    },
-    {
-      icon: Search,
-      title: "2. Diagnose",
-      desc: "Remote-Erstanalyse oder Vor-Ort-Check. Wir identifizieren das Problem und beschaffen Teile."
-    },
-    {
-      icon: Wrench,
-      title: "3. Lösung",
-      desc: "Fachgerechte Reparatur, Testlauf und digitale Dokumentation für Ihre Unterlagen."
-    }
-  ];
+  const { t } = useSettings();
 
   return (
-    <section className="py-24 bg-slate-950 relative border-t border-white/5">
-      <div className="container mx-auto px-4 md:px-6">
-        <SectionHeader title="Service Ablauf" subtitle="Simpel & Effizient" />
+    <section className="py-32 bg-slate-50 dark:bg-slate-950 relative border-t border-slate-200 dark:border-white/5 transition-colors duration-300">
+      <div className="container mx-auto px-6">
+        <SectionHeader title={t.flow.title} subtitle={t.flow.subtitle} />
         
-        <div className="grid md:grid-cols-3 gap-8 relative">
+        <div className="grid md:grid-cols-3 gap-12 relative max-w-5xl mx-auto">
            {/* Connector Line (Desktop) */}
-           <div className="hidden md:block absolute top-12 left-[16%] right-[16%] h-[2px] bg-slate-800 z-0"></div>
+           <div className="hidden md:block absolute top-12 left-[16%] right-[16%] h-[1px] bg-gradient-to-r from-slate-300 via-slate-200 to-slate-300 dark:from-slate-800 dark:via-slate-700 dark:to-slate-800 z-0"></div>
 
-           {steps.map((step, i) => (
-             <div key={i} className="relative z-10 flex flex-col items-center text-center group">
-               <div className="w-24 h-24 rounded-full bg-slate-900 border border-slate-700 flex items-center justify-center mb-6 group-hover:border-safety group-hover:text-safety transition-all shadow-[0_0_20px_rgba(0,0,0,0.5)]">
-                 <step.icon size={32} />
+           {t.flow.steps.map((step, i) => {
+             const Icon = icons[i];
+             return (
+               <div key={i} className="relative z-10 flex flex-col items-center text-center group">
+                 <div className="w-24 h-24 rounded-full bg-white dark:bg-slate-950 border border-slate-200 dark:border-white/10 flex items-center justify-center mb-8 group-hover:border-safety group-hover:text-safety transition-all duration-300 shadow-xl relative text-slate-700 dark:text-slate-300">
+                    {/* Outer Ring Pulse on Hover */}
+                    <div className="absolute -inset-1 rounded-full border border-safety/0 group-hover:border-safety/30 transition-all duration-500 scale-90 group-hover:scale-110"></div>
+                    <Icon size={32} strokeWidth={1.5} />
+                 </div>
+                 <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-4 uppercase tracking-wide group-hover:text-safety transition-colors">{step.title}</h3>
+                 <p className="text-sm text-slate-600 dark:text-slate-400 max-w-xs leading-relaxed font-light">{step.desc}</p>
                </div>
-               <h3 className="text-xl font-bold text-white mb-3">{step.title}</h3>
-               <p className="text-sm text-slate-400 max-w-xs leading-relaxed">{step.desc}</p>
-             </div>
-           ))}
+             );
+           })}
         </div>
 
-        <div className="mt-16 text-center">
-           <div className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-500/10 border border-emerald-500/20 rounded-full">
-              <CheckCircle2 size={16} className="text-emerald-500" />
-              <span className="text-xs font-bold text-emerald-400 uppercase tracking-wider">Digitale Rapporte sofort verfügbar</span>
+        <div className="mt-20 text-center">
+           <div className="inline-flex items-center gap-3 px-6 py-3 bg-emerald-500/5 border border-emerald-500/20 rounded-full">
+              <CheckCircle2 size={18} className="text-emerald-500" />
+              <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-widest">{t.flow.digital_report}</span>
            </div>
         </div>
       </div>
