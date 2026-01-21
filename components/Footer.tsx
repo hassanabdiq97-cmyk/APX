@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import { MapPin, Phone, Mail, Shield, Award } from 'lucide-react';
 import { Button } from './Button';

@@ -221,7 +221,7 @@ const de: Translations = {
       emergency: {
         title: 'Notfall-Modus',
         desc: 'Bei Maschinenstillstand benötigen Sie sofortige Hilfe. Verlieren Sie keine Zeit mit E-Mails.',
-        priority: 'Priorität A+'
+        priority: 'Priorité A+'
       }
     }
   },
@@ -303,7 +303,7 @@ const fr: Translations = {
     subtitle: 'Service de A à Z',
     items: [
       { id: '1', title: 'Contrats de maintenance', description: 'Protection proactive. Évitez les pannes grâce à des interventions planifiées et des temps de réponse garantis (SLA).', details: ['Niveaux SLA individuels.', 'Mesure laser annuelle.', 'Jusqu\'à 20% de rabais sur les pièces.'] },
-      { id: '2', title: 'Micromécanique & CNC', description: 'Savoir-faire approfondi pour Tornos, Bumotec & Willemin. Service de broche et correction géométrique en µ.', details: ['Spécialisé en décolletage.', 'Optimisation paramètres CNC.', 'Formation opérateurs.'] },
+      { id: '2', title: 'Mikromechanik & CNC', description: 'Savoir-faire approfondi pour Tornos, Bumotec & Willemin. Service de broche et correction géométrique en µ.', details: ['Spécialisé en décolletage.', 'Optimisation paramètres CNC.', 'Formation opérateurs.'] },
       { id: '3', title: 'Rétrofit & Modernisation', description: 'Mise à niveau Industrie 4.0. Nouvelles commandes et entraînements au lieu d\'achats coûteux.', details: ['Remplacement commandes obsolètes.', 'Intégration IoT.', 'Mise à jour sécurité SUVA.'] },
       { id: '4', title: 'Validation (GMP)', description: 'Documentation complète pour Medtech & Pharma. Nous fournissons les documents pour vos audits.', details: ['Support IQ/OQ/PQ.', 'Certificats de calibrage.', 'Équipement salle blanche.'] },
       { id: '5', title: 'Piquet d\'Urgence 24/7', description: 'Nous ne dormons pas. Temps d\'intervention garanti < 2h dans l\'Espace Mittelland.', details: ['Disponibilité 365 jours.', 'Pas de centre d\'appel.', 'Accès express aux pièces.'] },
@@ -459,7 +459,7 @@ const fr: Translations = {
 
 const SettingsContext = createContext<SettingsContextType | undefined>(undefined);
 
-export const SettingsProvider = ({ children }: { children?: ReactNode }) => {
+export const SettingsProvider = ({ children }: { children: React.ReactNode }) => {
   const [language, setLanguage] = useState<Language>('de');
   const [theme, setTheme] = useState<Theme>('dark');
   const [inquiryDraft, setInquiryDraft] = useState('');
