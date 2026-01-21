@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, PropsWithChildren } from 'react';
 import { Language, Theme, Translations } from '../types';
 
 interface SettingsContextType {
@@ -85,12 +85,12 @@ const de: Translations = {
       { id: '3', title: 'Retrofit & Modernisierung', description: 'Industrie 4.0 Upgrade für ältere Anlagen. Neue Steuerungen und Antriebe statt teurer Neukauf.', details: ['Austausch veralteter Steuerungen.', 'Integration IoT-Gateways.', 'Sicherheits-Update nach SUVA.'] },
       { id: '4', title: 'Validierung (GMP)', description: 'Lückenloser Paper-Trail für Medtech & Pharma. Wir liefern die Dokumentation für Ihre Audits.', details: ['IQ/OQ/PQ Support.', 'Kalibrier-Zertifikate.', 'Reinraum-taugliches Equipment.'] },
       { id: '5', title: '24/7 Notfall-Pikett', description: 'Wir schlafen nicht. Garantierte Interventionszeit < 2h im Espace Mittelland.', details: ['365 Tage Erreichbarkeit.', 'Keine Callcenter.', 'Ersatzteil-Express Zugriff.'] },
-      { id: '6', title: 'Spindel-Logistik', description: 'Lokales Austauschlager für Fischer/Kessler. Kein Export nötig. Plug & Play Austausch.', details: ['Pool für gängige Modelle.', 'Schwingungsanalyse nach Einbau.', 'Leihspindeln verfügbar.'] }
+      { id: '6', title: 'Spindel-Logistik', description: 'Lokales Austauschlager für Fischer/Kessler. Kein Export nötig. Plug & Play Austausch.', details: ['Pool modèles courants.', 'Analyse vibratoire.', 'Broches de prêt disponibles.'] }
     ],
-    more: 'Mehr erfahren',
-    modal_title: 'Service Übersicht',
-    modal_features: 'Key Features',
-    modal_cta: 'Unverbindliche Offerte',
+    more: 'En savoir plus',
+    modal_title: 'Aperçu du Service',
+    modal_features: 'Caractéristiques Clés',
+    modal_cta: 'Offre sans engagement',
   },
   flow: {
     title: 'Service Ablauf',
@@ -319,7 +319,7 @@ const fr: Translations = {
     subtitle: 'Simple & Efficace',
     steps: [
       { title: '1. Signalement', desc: 'Vous signalez la panne (Tél/Online). Notre répartiteur priorise immédiatement.' },
-      { title: '2. Diagnostic', desc: 'Analyse à distance ou sur site. Nous identifions le problème et trouvons les pièces.' },
+      { title: '2. Diagnose', desc: 'Analyse à distance ou sur site. Nous identifions le problème et trouvons les pièces.' },
       { title: '3. Solution', desc: 'Réparation professionnelle, test et documentation numérique pour vos dossiers.' }
     ],
     digital_report: 'Rapports numériques disponibles immédiatement',
@@ -459,7 +459,7 @@ const fr: Translations = {
 
 const SettingsContext = createContext<SettingsContextType | undefined>(undefined);
 
-export const SettingsProvider = ({ children }: { children: React.ReactNode }) => {
+export const SettingsProvider = ({ children }: PropsWithChildren<{}>) => {
   const [language, setLanguage] = useState<Language>('de');
   const [theme, setTheme] = useState<Theme>('dark');
   const [inquiryDraft, setInquiryDraft] = useState('');

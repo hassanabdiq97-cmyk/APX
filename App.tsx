@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import { ClipboardCheck, Ruler, ShieldCheck } from 'lucide-react';
 
@@ -55,17 +57,17 @@ const AppContent = () => {
            <div className="container mx-auto px-4 max-w-4xl text-center">
               <h2 className="text-2xl md:text-3xl font-black text-slate-900 dark:text-white mb-12">{t.trust_indicators.title}</h2>
               <div className="grid md:grid-cols-3 gap-8">
-                 <div className="bg-white dark:bg-slate-950 p-6 border border-slate-300 dark:border-white/5 hover:border-safety/30 transition-all duration-300 group shadow-sm hover:shadow-lg dark:shadow-none rounded-sm">
+                 <div className="bg-white dark:bg-slate-900 p-6 border border-slate-300 dark:border-white/5 hover:border-safety/30 transition-all duration-300 group shadow-sm hover:shadow-lg dark:shadow-none rounded-sm">
                     <ClipboardCheck className="mx-auto text-safety mb-4 group-hover:scale-110 transition-transform" size={32} />
                     <h4 className="font-bold text-slate-900 dark:text-white mb-2">{t.trust_indicators.validated.title}</h4>
                     <p className="text-xs text-slate-600 dark:text-slate-500">{t.trust_indicators.validated.desc}</p>
                  </div>
-                 <div className="bg-white dark:bg-slate-950 p-6 border border-slate-300 dark:border-white/5 hover:border-safety/30 transition-all duration-300 group shadow-sm hover:shadow-lg dark:shadow-none rounded-sm">
+                 <div className="bg-white dark:bg-slate-900 p-6 border border-slate-300 dark:border-white/5 hover:border-safety/30 transition-all duration-300 group shadow-sm hover:shadow-lg dark:shadow-none rounded-sm">
                     <Ruler className="mx-auto text-safety mb-4 group-hover:scale-110 transition-transform" size={32} />
                     <h4 className="font-bold text-slate-900 dark:text-white mb-2">{t.trust_indicators.laser.title}</h4>
                     <p className="text-xs text-slate-600 dark:text-slate-500">{t.trust_indicators.laser.desc}</p>
                  </div>
-                 <div className="bg-white dark:bg-slate-950 p-6 border border-slate-300 dark:border-white/5 hover:border-safety/30 transition-all duration-300 group shadow-sm hover:shadow-lg dark:shadow-none rounded-sm">
+                 <div className="bg-white dark:bg-slate-900 p-6 border border-slate-300 dark:border-white/5 hover:border-safety/30 transition-all duration-300 group shadow-sm hover:shadow-lg dark:shadow-none rounded-sm">
                     <ShieldCheck className="mx-auto text-safety mb-4 group-hover:scale-110 transition-transform" size={32} />
                     <h4 className="font-bold text-slate-900 dark:text-white mb-2">{t.trust_indicators.discretion.title}</h4>
                     <p className="text-xs text-slate-600 dark:text-slate-500">{t.trust_indicators.discretion.desc}</p>

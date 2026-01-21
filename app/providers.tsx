@@ -1,13 +1,9 @@
 'use client';
 
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
 import { SettingsProvider } from '../contexts/SettingsContext';
 
-interface ProvidersProps {
-  children: React.ReactNode;
-}
-
-export function Providers({ children }: ProvidersProps) {
+export function Providers({ children }: PropsWithChildren<{}>) {
   return (
     <SettingsProvider>
       {children}
