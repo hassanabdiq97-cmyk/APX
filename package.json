@@ -1,6 +1,6 @@
 {
   "name": "apx-industrial-next",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -19,7 +19,7 @@
     "@types/node": "latest",
     "@types/react": "latest",
     "@types/react-dom": "latest",
-    "autoprefixer": "latest",
+    "@tailwindcss/postcss": "latest",
     "postcss": "latest",
     "tailwindcss": "latest",
     "typescript": "latest"
