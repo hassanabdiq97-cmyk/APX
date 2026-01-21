@@ -131,8 +131,8 @@ const de: Translations = {
     subtitle: 'Standortvorteil',
     headline_part1: 'Andere stehen im Stau.',
     headline_part2: 'Wir sind schon da.',
-    description: 'Unser HQ in Lengnau (Solothurnstrasse 44) ist strategisch platziert. Wir erreichen jeden Kunden im Industrie-Cluster Grenchen-Biel in unter 20 Minuten. Das ist kein Marketing – das ist Geographie.',
-    stat_time: { title: 'Minimale Reaktionszeit', desc: 'Garantierte Ankunft ("Boots on the Ground") innerhalb SLA-Zeitfenster.' },
+    description: 'Unser HQ in Lengnau (Solothurnstrasse 44) ist strategisch platziert. Wir garantieren eine Reaktionszeit von 300 Sekunden vom HQ bis zum Grenchen Airport. Das ist kein Marketing – das ist Geographie.',
+    stat_time: { title: '300 Sekunden Reaktionszeit', desc: 'Garantierte Abfahrt ("Boots on the Ground") ab Lengnau HQ.' },
     stat_stock: { title: 'Ersatzteillager Lengnau', desc: 'Kritische Komponenten für Tornos & Fanuc direkt ab Lager verfügbar.' }
   },
   career: {
@@ -353,8 +353,8 @@ const fr: Translations = {
     subtitle: 'Avantage Local',
     headline_part1: 'Les autres sont dans les bouchons.',
     headline_part2: 'Nous sommes déjà là.',
-    description: 'Notre QG à Lengnau est stratégiquement placé. Nous atteignons chaque client du cluster Grenchen-Bienne en moins de 20 minutes. Ce n\'est pas du marketing, c\'est de la géographie.',
-    stat_time: { title: 'Temps de réaction minimal', desc: 'Arrivée garantie dans la fenêtre SLA.' },
+    description: 'Notre QG à Lengnau (Solothurnstrasse 44) est stratégiquement placé. Nous garantissons une réponse en 300 secondes pour la zone de l\'aéroport de Grenchen. Ce n\'est pas du marketing, c\'est de la géographie.',
+    stat_time: { title: '300 Secondes Réponse', desc: 'Départ garanti ("Boots on the Ground") depuis Lengnau HQ.' },
     stat_stock: { title: 'Stock pièces Lengnau', desc: 'Composants critiques pour Tornos & Fanuc direkt ab Lager verfügbar.' }
   },
   career: {

@@ -2,19 +2,20 @@
 
 @theme {
   /* --- COLOR PALETTE --- */
-  /* Industrial Orange/Red for Safety/Emergency */
   --color-safety: #FF3300;
   --color-safety-glow: #FF5500;
   --color-safety-dim: #991b00;
+  
+  /* NEW BRAND COLOR */
+  --color-cyan-apex: #00f3ff;
 
-  /* Custom Slate Shades */
   --color-slate-850: #172033;
   --color-slate-900: #0f172a;
   --color-slate-950: #020617;
 
   /* --- TYPOGRAPHY --- */
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  --font-mono: var(--font-jetbrains), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), monospace;
 
   /* --- ANIMATIONS --- */
   --animate-spin-slow: spin 8s linear infinite;
@@ -43,6 +44,15 @@
 }
 
 /* --- UTILITIES & COMPONENTS --- */
+
+/* Custom Backgrounds */
+@utility bg-grid-pattern {
+  background-image: linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+}
+
+@utility bg-glass {
+  background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.00) 100%);
+}
 
 /* Premium Noise Texture */
 .bg-noise {
