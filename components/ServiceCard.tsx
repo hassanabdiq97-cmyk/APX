@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import { ChevronRight } from 'lucide-react';
 import { ServiceItem } from '../types';
 
@@ -11,41 +11,45 @@ interface ServiceCardProps {
 
 export const ServiceCard: React.FC<ServiceCardProps> = ({ service, index }) => {
   const divRef = useRef<HTMLDivElement>(null);
-  const [position, setPosition] = useState({ x: 0, y: 0 });
-  const [opacity, setOpacity] = useState(0);
 
+  // PROFESSOR OPTIMIZATION:
+  // Instead of triggering a React State update (and re-render) on every pixel of mouse movement,
+  // we update CSS variables directly on the DOM element. 
+  // This keeps the JavaScript thread free and leaves the rendering to the GPU/Compositor.
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!divRef.current) return;
     const rect = divRef.current.getBoundingClientRect();
-    setPosition({ x: e.clientX - rect.left, y: e.clientY - rect.top });
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    
+    divRef.current.style.setProperty('--mouse-x', `${x}px`);
+    divRef.current.style.setProperty('--mouse-y', `${y}px`);
   };
-
-  const handleMouseEnter = () => setOpacity(1);
-  const handleMouseLeave = () => setOpacity(0);
 
   return (
     <div 
       ref={divRef}
       onMouseMove={handleMouseMove}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
       className="group relative h-full bg-slate-900 border border-white/5 overflow-hidden transition-colors hover:border-white/10"
+      style={{
+        // Default values to prevent jumpiness before first interaction
+        '--mouse-x': '0px',
+        '--mouse-y': '0px',
+      } as React.CSSProperties}
     >
-      {/* Spotlight Effect Layer */}
+      {/* Spotlight Effect Layer via CSS Variables */}
       <div 
-        className="pointer-events-none absolute -inset-px opacity-0 transition duration-300"
+        className="pointer-events-none absolute -inset-px opacity-0 transition duration-300 group-hover:opacity-100"
         style={{
-          opacity,
-          background: `radial-gradient(600px circle at ${position.x}px ${position.y}px, rgba(255, 51, 0, 0.08), transparent 40%)`
+          background: `radial-gradient(600px circle at var(--mouse-x) var(--mouse-y), rgba(255, 51, 0, 0.08), transparent 40%)`
         }}
       />
       
-      {/* Border Spotlight Layer */}
+      {/* Border Spotlight Layer via CSS Variables */}
       <div 
-        className="pointer-events-none absolute -inset-px opacity-0 transition duration-300"
+        className="pointer-events-none absolute -inset-px opacity-0 transition duration-300 group-hover:opacity-100"
         style={{
-          opacity,
-          background: `radial-gradient(400px circle at ${position.x}px ${position.y}px, rgba(255, 51, 0, 0.4), transparent 40%)`,
+          background: `radial-gradient(400px circle at var(--mouse-x) var(--mouse-y), rgba(255, 51, 0, 0.4), transparent 40%)`,
           maskImage: 'linear-gradient(black, black), linear-gradient(black, black)',
           maskClip: 'content-box, border-box',
           padding: '1px',

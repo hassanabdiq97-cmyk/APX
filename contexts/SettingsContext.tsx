@@ -1,7 +1,7 @@
 'use client';
 
-import React, { createContext, useContext, useState, useEffect, PropsWithChildren } from 'react';
-import { Language, Theme, Translations } from '../types';
+import React, { createContext, useContext, useState, useEffect, useMemo, PropsWithChildren } from 'react';
+import { Language, Theme, Translations, ContactReason } from '../types';
 
 interface SettingsContextType {
   language: Language;
@@ -13,477 +13,292 @@ interface SettingsContextType {
   setInquiryDraft: (text: string) => void;
 }
 
-// FULL GERMAN TRANSLATION
 const de: Translations = {
   nav: {
-    services: 'Leistungen',
+    services: 'Services',
     industries: 'Branchen',
-    expertise: 'Expertise',
+    expertise: 'Standorte',
     career: 'Karriere',
-    emergency: 'Notfall-Pikett',
-    status: 'SYSTEM STATUS: ONLINE',
+    emergency: '24/7 PIKETT',
+    status: 'SYSTEM STATUS: NOMINAL',
     location: 'GRENCHEN // BIEL // SOLOTHURN',
   },
   hero: {
-    region: 'ESPACE MITTELLAND: GRENCHEN - BIEL/BIENNE',
-    headline: 'MINIMALE AUSFALLZEIT',
-    subheadline: 'DURCH REGIONALE NÄHE.',
-    description: 'Wir verstehen den Takt Ihrer Produktion. Ob Uhrenindustrie, Medtech oder Präzisionsfertigung: Wir sind vor Ort, bevor der Stillstand teuer wird.',
-    cta_check: 'Notfall Quick-Check',
-    cta_suva: 'SUVA Konform',
+    region: 'STÜTZPUNKT: GRENCHEN - BIEL',
+    headline: 'STILLSTAND IST',
+    subheadline: 'KEINE OPTION.',
+    description: 'Im Precision Valley zählt der Output. Wir sind Ihr technischer Partner für CNC-Instandhaltung. Wenn die Maschine steht, sorgen wir für den Restart – präzise, schnell und nachhaltig.',
+    cta_check: 'Diagnose Starten',
+    cta_suva: 'Audit & Sicherheit',
   },
   trust: {
-    label: 'Expertise in Systemen von:',
+    label: 'Qualifiziert für Systeme von:',
   },
   quickcheck: {
-    title: 'Notfall Quick-Check',
-    description: 'Damit unser Pikett-Techniker sofort die richtigen Ersatzteile einpacken kann: Bitte halten Sie diese 3 Informationen bereit, bevor Sie anrufen.',
+    title: 'System-Diagnose',
+    description: 'Initialisierung der Wartungsanfrage. Übermitteln Sie die Maschinendaten für eine sofortige technische Analyse.',
     items: [
-      { id: '01', title: 'MASCHINEN-TYP', desc: 'Siehe Typenschild.' },
-      { id: '02', title: 'FEHLERCODE', desc: 'Exakte Display-Meldung.' },
-      { id: '03', title: 'FOTO', desc: 'Per WhatsApp senden.' }
+      { id: '01', title: 'MASCHINEN-ID', desc: 'Hersteller / Seriennummer.' },
+      { id: '02', title: 'FEHLERBILD', desc: 'Fehlercode am Display (z.B. SV0411).' },
+      { id: '03', title: 'STATUS', desc: 'Foto der Komponente.' }
     ],
-    call_cta: 'Pikett-Line 24/7',
-    digital_cta: 'Digitale Störungsmeldung',
+    call_cta: 'Service-Desk',
+    digital_cta: 'Ticket eröffnen',
   },
   industries: {
-    title: 'Fokus Sektoren',
-    subtitle: 'Spezialisierung',
+    title: 'Fokus-Industrien',
+    subtitle: 'Expertise',
     items: [
       {
         title: 'Uhrenindustrie',
-        desc: 'Höchste Präzision für die kleinsten Teile. Wir beherrschen die Maschinen, die das Herz der Schweizer Wirtschaft antreiben.',
-        features: ['Wartung von Langdrehern', 'Spindel-Service < 2µ Runout', 'Stangenlader-Integration'],
-        brands: 'Tornos, Bumotec, Willemin-Macodel'
+        desc: 'Mikromechanik am Limit. Wir sichern die µ-genaue Präzision für Ihre Langdrehautomaten.',
+        features: ['Spindel-Rundlauf Optimierung', 'Stangenlader-Kalibrierung', 'Achs-Geometrie Laservermessung'],
+        brands: 'Tornos, Bumotec, Willemin'
       },
       {
         title: 'Medizintechnik',
-        desc: 'Instandhaltung in regulierten Umgebungen. Wir garantieren Compliance und Sauberkeit für Ihre Produktion.',
-        features: ['GMP-konforme Dokumentation', 'Reinraum-Protokolle (ISO 7/8)', 'Validierungs-Support'],
+        desc: 'Validierte Prozesse. Instandhaltung unter Reinraum-Bedingungen (ISO 7) mit lückenloser Dokumentation.',
+        features: ['GMP-konforme Protokolle', 'Kontaminations-Schutz', 'Audit-Support'],
         brands: 'Chiron, Starrag, Mikron'
       },
       {
-        title: 'Präzisionsfertigung',
-        desc: 'High-Performance für Automobil & Aerospace. Inklusive Werkzeug- & Formenbau (HSC). Minimierung der Nebenzeiten.',
-        features: ['Automations-Anbindung', 'Kühlmittel-Management', 'Geometrie nach ISO 230'],
-        brands: 'Index, Traub, Fanuc, GF Machining'
+        title: 'Automotive / Aero',
+        desc: 'High-Performance Zerspanung. Optimierung der Zykluszeiten und Wiederherstellung der Werks-Geometrie.',
+        features: ['Automation-Schnittstellen', 'Hydraulik-Systemservice', 'ISO 230 Abnahme'],
+        brands: 'Index, Traub, Fanuc, GF'
       },
       {
-        title: 'Giessereien',
-        desc: 'Wartung unter Extrembedingungen. Wir sorgen dafür, dass Hitze und Staub Ihre Automation nicht stoppen.',
-        features: ['Wartung von Entnahme-Robotern', 'Industriekran-Wartung & Reparatur', 'Hydraulik-Instandsetzung'],
-        brands: 'Bühler, Frech, FAT, Kuka Foundry'
+        title: 'Schwerindustrie',
+        desc: 'Robuste Technik. Wartung von Giesserei-Anlagen und Automation unter härtesten Bedingungen.',
+        features: ['Roboter-Instandsetzung', 'Schutzsystem-Prüfung', 'Steuerungs-Retrofit'],
+        brands: 'Bühler, Frech, Kuka Foundry'
       }
     ]
   },
   services: {
-    title: 'Leistungs-Spektrum',
-    subtitle: 'End-to-End Service',
+    title: 'Leistungsportfolio',
+    subtitle: 'Technische Services',
     items: [
-      { id: '1', title: 'Wartungsverträge', description: 'Proaktiver Schutz. Verhindern Sie Ausfälle durch geplante Interventionen und garantierte Reaktionszeiten (SLA).', details: ['Individuelle SLA-Level (Bronze, Silber, Gold).', 'Jährliche Laser-Vermessung.', 'Bis zu 20% Rabatt auf Teile.'] },
-      { id: '2', title: 'Mikromechanik & CNC', description: 'Tiefes Know-how für Tornos, Bumotec & Willemin. Spindel-Service und Geometrie-Korrektur im µ-Bereich.', details: ['Spezialisiert auf Langdreher.', 'Optimierung von CNC-Parametern.', 'Schulung Bedienpersonal.'] },
-      { id: '3', title: 'Retrofit & Modernisierung', description: 'Industrie 4.0 Upgrade für ältere Anlagen. Neue Steuerungen und Antriebe statt teurer Neukauf.', details: ['Austausch veralteter Steuerungen.', 'Integration IoT-Gateways.', 'Sicherheits-Update nach SUVA.'] },
-      { id: '4', title: 'Validierung (GMP)', description: 'Lückenloser Paper-Trail für Medtech & Pharma. Wir liefern die Dokumentation für Ihre Audits.', details: ['IQ/OQ/PQ Support.', 'Kalibrier-Zertifikate.', 'Reinraum-taugliches Equipment.'] },
-      { id: '5', title: '24/7 Notfall-Pikett', description: 'Wir schlafen nicht. Garantierte Interventionszeit < 2h im Espace Mittelland.', details: ['365 Tage Erreichbarkeit.', 'Keine Callcenter.', 'Ersatzteil-Express Zugriff.'] },
-      { id: '6', title: 'Spindel-Logistik', description: 'Lokales Austauschlager für Fischer/Kessler. Kein Export nötig. Plug & Play Austausch.', details: ['Pool modèles courants.', 'Analyse vibratoire.', 'Broches de prêt disponibles.'] }
+      { id: '1', title: 'Predictive Maintenance', description: 'Datenbasierte Wartung. Wir analysieren Vibrationen und Parameter, bevor ein Lager ausfällt.', details: ['Schwingungs-Analyse.', 'Laser-Interferometrie.', 'Zustands-Monitoring.'] },
+      { id: '2', title: 'Mechanische Reparatur', description: 'Austausch und Revision von Kernkomponenten. Spindeln, Kugelrollspindeln und Führungen.', details: ['Spindel-Revision.', 'Lagertausch.', 'Geometrie-Korrektur.'] },
+      { id: '3', title: 'Retrofit & Upgrade', description: 'Modernisierung statt Neukauf. Integration neuer Steuerungen und Antriebe in bewährte Mechanik.', details: ['Steuerungs-Update.', 'IoT-Integration.', 'Sicherheits-Nachrüstung.'] },
+      { id: '4', title: 'Compliance & Audit', description: 'Technische Dokumentation. Wir validieren Ihre Anlagen nach aktuellen Normen und Standards.', details: ['Messprotokolle.', 'Kalibrier-Zertifikate.', 'Sicherheits-Audits.'] },
+      { id: '5', title: 'Express Service', description: 'Priorisierter Einsatz bei Stillstand. Garantierte Reaktionszeit < 30 Min im Sektor Grenchen-Biel.', details: ['365 Tage Pikett.', 'Prio-1 Status.', 'Express-Logistik.'] },
+      { id: '6', title: 'Ersatzteil-Management', description: 'Lokales Lager für kritische Komponenten. Verfügbarkeit von Spindeln und Antrieben ab Lengnau.', details: ['Lager Lengnau.', 'Spindel-Pool.', 'Leih-Aggregate.'] }
     ],
-    more: 'En savoir plus',
-    modal_title: 'Aperçu du Service',
-    modal_features: 'Caractéristiques Clés',
-    modal_cta: 'Offre sans engagement',
+    more: 'Details ansehen',
+    modal_title: 'Service Details',
+    modal_features: 'Leistungsumfang',
+    modal_cta: 'Angebot anfordern',
   },
   flow: {
-    title: 'Service Ablauf',
-    subtitle: 'Simpel & Effizient',
+    title: 'Service-Prozess',
+    subtitle: 'Workflow',
     steps: [
-      { title: '1. Meldung', desc: 'Sie melden die Störung (Tel/Online). Unser Dispatcher priorisiert sofort nach Dringlichkeit.' },
-      { title: '2. Diagnose', desc: 'Remote-Erstanalyse oder Vor-Ort-Check. Wir identifizieren das Problem und beschaffen Teile.' },
-      { title: '3. Solution', desc: 'Fachgerechte Reparatur, Testlauf und digitale Dokumentation für Ihre Unterlagen.' }
+      { title: '1. Meldung', desc: 'Erfassung der Störung im Service-Desk. Technische Ersteinschätzung.' },
+      { title: '2. Analyse', desc: 'Diagnose vor Ort oder Remote. Festlegung der benötigten Teile.' },
+      { title: '3. Execution', desc: 'Durchführung der Reparatur. Funktionstest und Abnahme.' }
     ],
-    digital_report: 'Digitale Rapporte sofort verfügbar',
+    digital_report: 'Digitales Service-Protokoll inklusive',
   },
   calculator: {
-    badge: 'Business Impact Analyse',
-    title: 'Cost of Inaction',
-    description: 'Stillstand ist teurer als Instandhaltung. Nutzen Sie diesen Rechner, um das finanzielle Risiko eines ungeplanten Maschinen-Ausfalls zu quantifizieren.',
+    badge: 'Kosten-Analyse',
+    title: 'Kosten des Stillstands',
+    description: 'Berechnen Sie das wirtschaftliche Risiko eines ungeplanten Maschinenausfalls.',
     inputs: {
-      duration: 'Stillstandsdauer',
-      rate: 'Maschinen-Stundensatz',
-      employees: 'Betroffenes Personal',
-      rate_hint: 'Durchschnitt 5-Achs CNC: ~250-400 CHF/h',
+      duration: 'Dauer (Std)',
+      rate: 'Maschinen-Satz',
+      employees: 'Personal',
+      rate_hint: 'CHF/h',
     },
     results: {
-      risk: 'Total Risk Exposure',
-      production: 'Produktionsausfall',
-      personnel: 'Personalkosten',
-      cta: 'Risiko jetzt minimieren',
-      roi_title: 'ROI Perspektive',
-      roi_desc: (months) => `Für die Kosten dieses einzigen Vorfalls könnten Sie ca. ${months} Monate lang einen präventiven Wartungsvertrag finanzieren.`
+      risk: 'Geschätzter Ausfall',
+      production: 'Produktions-Verlust',
+      personnel: 'Personal-Kosten',
+      cta: 'Service anfordern',
+      roi_title: 'Wartungs-ROI',
+      roi_desc: (months: number) => `Ein Service-Vertrag amortisiert sich in ${months} Monaten im Vergleich zu diesem Ausfall.`,
     },
     severity: {
       low: 'MODERAT',
-      mid: 'SIGNIFIKANT',
-      high: 'KRITISCH'
+      mid: 'KRITISCH',
+      high: 'HOCHRISIKO',
     }
   },
   expertise: {
-    title: 'Operational Radius',
-    subtitle: 'Standortvorteil',
-    headline_part1: 'Andere stehen im Stau.',
-    headline_part2: 'Wir sind schon da.',
-    description: 'Unser HQ in Lengnau (Solothurnstrasse 44) ist strategisch platziert. Wir garantieren eine Reaktionszeit von 300 Sekunden vom HQ bis zum Grenchen Airport. Das ist kein Marketing – das ist Geographie.',
-    stat_time: { title: '300 Sekunden Reaktionszeit', desc: 'Garantierte Abfahrt ("Boots on the Ground") ab Lengnau HQ.' },
-    stat_stock: { title: 'Ersatzteillager Lengnau', desc: 'Kritische Komponenten für Tornos & Fanuc direkt ab Lager verfügbar.' }
+    title: 'Einsatzgebiet',
+    subtitle: 'Sektor Mittelland',
+    headline_part1: 'Im Zentrum des',
+    headline_part2: 'Precision Valley',
+    description: 'Unser Standort in Lengnau ist strategisch gewählt. Wir erreichen jeden Kunden in Grenchen, Biel und Solothurn innerhalb kürzester Zeit. Maximale Nähe für minimale Ausfallzeiten.',
+    stat_time: { title: '< 30 MIN', desc: 'Anfahrtszeit Sektor' },
+    stat_stock: { title: '2500+', desc: 'Komponenten Lagernd' },
   },
   career: {
     badge: 'Karriere',
-    title: 'Apex Culture',
-    subtitle: 'More than Mechanics',
-    intro_title: 'Wertschätzung ist unser Antrieb.',
-    intro_text: 'Ein überdurchschnittlicher Lohn ist bei uns die Basis, nicht das Verkaufsargument. Wir sind ein modernes, tolerantes Unternehmen, das auf gegenseitigen Respekt und gemeinsames Wachstum setzt. Bei uns bist du keine Nummer, sondern der Motor unseres Erfolgs.',
+    title: 'Werde Teil',
+    subtitle: 'Des Teams',
+    intro_title: 'Wir suchen Technik-Enthusiasten.',
+    intro_text: 'Arbeiten bei APEX heisst: High-End Maschinen, modernstes Equipment und Lösungen für die besten Produzenten der Schweiz.',
     values: [
-      { 
-        id: 'vacation', 
-        title: '6 Wochen Ferien', 
-        desc: 'Wer hart arbeitet, muss gut regenerieren. Wir garantieren 30 Tage Urlaub für alle, ab dem ersten Jahr.' 
-      },
-      { 
-        id: 'education', 
-        title: 'Apex Academy', 
-        desc: 'Stillstand ist Rückschritt. Wir zahlen deine Weiterbildungen (SPS, CNC, Management) komplett.' 
-      },
-      { 
-        id: 'team', 
-        title: 'Zusammenhalt', 
-        desc: 'Wir wachsen zusammen. Jährlicher Team-Ausflug (letztes Jahr: Canyoning im Tessin) stärkt unseren Spirit.' 
-      },
-      { 
-        id: 'tolerance', 
-        title: 'Modern & Tolerant', 
-        desc: 'Wir leben Vielfalt. Deine Herkunft ist uns egal, deine Leidenschaft für Technik zählt.' 
-      }
+      { id: 'vacation', title: 'Erholung', desc: '6 Wochen Ferien. Ausgleich ist wichtig für Fokus.' },
+      { id: 'education', title: 'Entwicklung', desc: 'Support für Weiterbildungen (Meister/HF).' },
+      { id: 'team', title: 'Teamwork', desc: 'Flache Hierarchien und direkte Kommunikation.' },
+      { id: 'tolerance', title: 'Mindset', desc: 'Lösungsorientiertes Arbeiten und Präzision.' }
     ],
     cta_init: 'Initiativ bewerben',
-    positions_title: 'Open Positions',
+    positions_title: 'Offene Stellen',
     no_position: 'Keine passende Stelle?',
-    apply_cta: 'Sende uns dein Dossier',
+    apply_cta: 'Jetzt Bewerben',
     modal: {
-      location: 'Standort',
+      location: 'Arbeitsort',
       workload: 'Pensum',
-      requirements: 'Das bringst du mit',
-      benefits: 'Deine Benefits',
-      apply_now: 'Jetzt bewerben'
+      requirements: 'Anforderungsprofil',
+      benefits: 'Benefits',
+      apply_now: 'Bewerbung starten',
     },
     jobs: [
-      {
-        id: 'cnc-tech',
-        title: 'Servicetechniker CNC (m/w/d)',
-        location: 'Region Biel/Bienne',
-        workload: '100%',
-        description: 'Du bist die Feuerwehr für unsere Kunden in der Uhrenindustrie. Wenn eine Tornos oder Bumotec steht, sorgst du dafür, dass die Späne wieder fliegen.',
-        requirements: ['Ausbildung als Polymechaniker/Automatiker.', 'Erfahrung mit CNC-Maschinen.', 'Fanuc/Siemens Kenntnisse.'],
-        benefits: ['6 Wochen Ferien.', 'Top Fahrzeug zur Privatnutzung.', 'Bezahlte Weiterbildung.']
-      },
-      {
-        id: 'retro-auto',
-        title: 'Automatiker für Retrofit (m/w/d)',
-        location: 'Region Solothurn',
-        workload: '80-100%',
-        description: 'Du hauchst alten Maschinen neues Leben ein. Du entwickelst neue Steuerungskonzepte und integrierst IoT-Lösungen.',
-        requirements: ['Automatiker EFZ.', 'EPLAN Kenntnisse.', 'SPS-Programmierung (TIA).'],
-        benefits: ['Flexible Arbeitszeiten.', 'Moderner Arbeitsplatz.', 'Team-Events.']
-      }
+        { 
+            id: 'job1', 
+            title: 'Servicetechniker CNC (m/w/d)', 
+            location: 'Lengnau / Mobile', 
+            workload: '100%', 
+            description: 'Du bist verantwortlich für Diagnose, Wartung und Reparatur von CNC-Werkzeugmaschinen bei unseren Kunden.', 
+            requirements: ['Ausbildung Polymechaniker/Automatiker', 'Erfahrung mit Steuerungen (Fanuc/Siemens)', 'Führerschein Kat. B'],
+            benefits: ['Eigenes Service-Fahrzeug', 'Top-Werkzeug & Laptop', 'Attraktives Salär']
+        },
+        { 
+            id: 'job2', 
+            title: 'Technischer Sachbearbeiter (m/w/d)', 
+            location: 'Lengnau HQ', 
+            workload: '80-100%', 
+            description: 'Koordination der Service-Einsätze und technische Unterstützung am Telefon.', 
+            requirements: ['Technische Grundausbildung', 'Organisationsstark', 'Kommunikativ'],
+            benefits: ['Home-Office Möglichkeit', 'Flexible Arbeitszeiten', 'Modernster Arbeitsplatz']
+        }
     ]
   },
   trust_indicators: {
-    title: 'VERTRAUEN DURCH EXPERTISE',
-    validated: { title: 'Rapports Validés', desc: 'Digitale Service-Reports, direkt verwendbar für Ihre QM-Dokumentation.' },
-    laser: { title: 'Laser-Vermessung', desc: 'Einsatz modernster Interferometer zur geometrischen Abnahme.' },
-    discretion: { title: 'Discrétion', desc: 'Wir arbeiten in den sensibelsten Bereichen. Ihre IP ist sicher.' }
+    title: 'Unsere Standards',
+    validated: { title: 'Zertifiziert', desc: 'Nach Herstellervorgaben.' },
+    laser: { title: 'Präzision', desc: 'Kalibriertes Messequipment.' },
+    discretion: { title: 'Diskretion', desc: 'Schutz Ihres Know-hows.' },
   },
   contact: {
     badge: 'Kontakt',
-    title: 'Aufnehmen',
-    address_label: 'HQ Adresse',
+    title: 'Service-Desk',
+    address_label: 'Standort',
     hotline_label: '24/7 Hotline',
-    digital_label: 'Digital',
-    status: 'System Status: Operational',
+    digital_label: 'Online',
+    status: 'STATUS: ONLINE',
     form: {
-      reason_label: 'Worum geht es?',
-      name: 'Name *',
-      company: 'Firma *',
-      phone: 'Telefon *',
-      details: 'Details / Fehlermeldung',
-      submit: 'Anfrage Senden',
-      security: 'SSL-Verschlüsselt. Diskretion garantiert.',
-      success_title: 'Anfrage Übermittelt',
-      success_desc: 'Unser Dispatcher prüft Ihre Meldung. Wir melden uns innert 30 Minuten.',
+      reason_label: 'Betreff',
+      name: 'Name / ID',
+      company: 'Firma',
+      phone: 'Rückruf-Nummer',
+      details: 'Beschreibung',
+      submit: 'Anfrage senden',
+      security: 'SSL-Verschlüsselt',
+      success_title: 'Ticket erstellt',
+      success_desc: 'Wir haben Ihre Anfrage erhalten. Ein Techniker meldet sich in Kürze.',
       emergency: {
-        title: 'Notfall-Modus',
-        desc: 'Bei Maschinenstillstand benötigen Sie sofortige Hilfe. Verlieren Sie keine Zeit mit E-Mails.',
-        priority: 'Priorité A+'
+        title: 'Notfall-Service',
+        desc: 'Für dringende Maschinenstillstände nutzen Sie bitte die direkte Hotline.',
+        priority: 'PRIORITÄT',
       }
     }
   },
   footer: {
-    brand_desc: 'Spezialisiert auf die Instandhaltung von CNC-Werkzeugmaschinen und Reinraum-Anlagen in der Uhrenindustrie und Medizintechnik.',
-    services_title: 'Services',
-    region_title: 'Einsatzgebiet',
-    contact_title: 'Kontakt HQ',
-    callback: 'Rückruf anfordern',
-    rights: 'APEX INDUSTRIAL SWISS AG. ALL SYSTEMS OPERATIONAL.'
+    brand_desc: 'Spezialisiert auf industrielle Instandhaltung und CNC-Service im Precision Valley.',
+    services_title: 'Angebot',
+    region_title: 'Region',
+    contact_title: 'Kontakt',
+    callback: 'Rückrufservice',
+    rights: 'APEX Industrial Solutions. Alle Rechte vorbehalten.',
   }
 };
 
-// FULL FRENCH TRANSLATION
 const fr: Translations = {
+  ...de, // Fallback
   nav: {
+    ...de.nav,
     services: 'Services',
     industries: 'Secteurs',
-    expertise: 'Expertise',
+    expertise: 'Sites',
     career: 'Carrière',
-    emergency: 'Urgence 24/7',
-    status: 'ÉTAT SYSTÈME: EN LIGNE',
+    emergency: 'URGENCE 24/7',
+    status: 'ÉTAT SYSTÈME: NOMINAL',
     location: 'GRENCHEN // BIENNE // SOLEURE',
   },
   hero: {
-    region: 'ESPACE MITTELLAND: GRENCHEN - BIENNE',
-    headline: 'TEMPS D\'ARRÊT MINIMAL',
-    subheadline: 'GRÂCE À LA PROXIMITÉ.',
-    description: 'Nous comprenons le rythme de votre production. Horlogerie, Medtech ou usinage de précision : Nous sommes sur place avant que l\'arrêt ne devienne coûteux.',
-    cta_check: 'Check-up Rapide',
-    cta_suva: 'Conforme SUVA',
-  },
-  trust: {
-    label: 'Expertise sur systèmes:',
+    region: 'BASE: GRENCHEN - BIENNE',
+    headline: 'L\'ARRÊT N\'EST',
+    subheadline: 'PAS UNE OPTION.',
+    description: 'Dans la Precision Valley, le rendement compte. Nous sommes votre partenaire technique. Si la machine s\'arrête, nous assurons le redémarrage - précis et rapide.',
+    cta_check: 'Diagnostic',
+    cta_suva: 'Audit & Sécurité',
   },
   quickcheck: {
-    title: 'Check-up d\'Urgence',
-    description: 'Pour que notre technicien de piquet puisse emporter les bonnes pièces : Préparez ces 3 informations avant d\'appeler.',
+    ...de.quickcheck,
+    title: 'Diagnostic Système',
+    description: 'Initialisation de la demande. Transmettez les données machine pour une analyse immédiate.',
     items: [
-      { id: '01', title: 'TYPE MACHINE', desc: 'Voir plaque signalétique.' },
-      { id: '02', title: 'CODE ERREUR', desc: 'Message exact sur l\'écran.' },
-      { id: '03', title: 'PHOTO', desc: 'Envoyer par WhatsApp.' }
+      { id: '01', title: 'ID MACHINE', desc: 'No. Série.' },
+      { id: '02', title: 'ERREUR', desc: 'Code d\'erreur (ex. SV0411).' },
+      { id: '03', title: 'STATUT', desc: 'Photo de la situation.' }
     ],
-    call_cta: 'Ligne Piquet 24/7',
-    digital_cta: 'Signalement Digital',
-  },
-  industries: {
-    title: 'Secteurs Clés',
-    subtitle: 'Spécialisation',
-    items: [
-      {
-        title: 'Horlogerie',
-        desc: 'Précision maximale pour les plus petites pièces. Nous maîtrisons les machines qui font tourner l\'économie suisse.',
-        features: ['Maintenance décolleteuses', 'Service broche < 2µ Runout', 'Intégration ravitailleurs'],
-        brands: 'Tornos, Bumotec, Willemin-Macodel'
-      },
-      {
-        title: 'Medtech',
-        desc: 'Maintenance en environnement régulé. Nous garantissons la conformité et la propreté de votre production.',
-        features: ['Documentation GMP', 'Protocoles salle blanche', 'Support validation'],
-        brands: 'Chiron, Starrag, Mikron'
-      },
-      {
-        title: 'Usinage Précision',
-        desc: 'Haute performance pour Auto & Aéro. Y compris Moules & Outillages (UGV). Minimisation des temps morts.',
-        features: ['Connexion automation', 'Gestion lubrifiants', 'Géométrie selon ISO 230'],
-        brands: 'Index, Traub, Fanuc, GF Machining'
-      },
-      {
-        title: 'Fonderies',
-        desc: 'Maintenance en conditions extrêmes. Nous veillons à ce que la chaleur et la poussière n\'arrêtent pas votre automatisation.',
-        features: ['Robots de prélèvement', 'Entretien ponts roulants', 'Maintenance hydraulique'],
-        brands: 'Bühler, Frech, FAT, Kuka Foundry'
-      }
-    ]
-  },
-  services: {
-    title: 'Gamme de Services',
-    subtitle: 'Service de A à Z',
-    items: [
-      { id: '1', title: 'Contrats de maintenance', description: 'Protection proactive. Évitez les pannes grâce à des interventions planifiées et des temps de réponse garantis (SLA).', details: ['Niveaux SLA individuels.', 'Mesure laser annuelle.', 'Jusqu\'à 20% de rabais sur les pièces.'] },
-      { id: '2', title: 'Mikromechanik & CNC', description: 'Savoir-faire approfondi pour Tornos, Bumotec & Willemin. Service de broche et correction géométrique en µ.', details: ['Spécialisé en décolletage.', 'Optimisation paramètres CNC.', 'Formation opérateurs.'] },
-      { id: '3', title: 'Rétrofit & Modernisation', description: 'Mise à niveau Industrie 4.0. Nouvelles commandes et entraînements au lieu d\'achats coûteux.', details: ['Remplacement commandes obsolètes.', 'Intégration IoT.', 'Mise à jour sécurité SUVA.'] },
-      { id: '4', title: 'Validation (GMP)', description: 'Documentation complète pour Medtech & Pharma. Nous fournissons les documents pour vos audits.', details: ['Support IQ/OQ/PQ.', 'Certificats de calibrage.', 'Équipement salle blanche.'] },
-      { id: '5', title: 'Piquet d\'Urgence 24/7', description: 'Nous ne dormons pas. Temps d\'intervention garanti < 2h dans l\'Espace Mittelland.', details: ['Disponibilité 365 jours.', 'Pas de centre d\'appel.', 'Accès express aux pièces.'] },
-      { id: '6', title: 'Logistique Broches', description: 'Stock local pour Fischer/Kessler. Pas d\'exportation nécessaire. Échange Plug & Play.', details: ['Pool modèles courants.', 'Analyse vibratoire.', 'Broches de prêt disponibles.'] }
-    ],
-    more: 'En savoir plus',
-    modal_title: 'Aperçu du Service',
-    modal_features: 'Caractéristiques Clés',
-    modal_cta: 'Offre sans engagement',
-  },
-  flow: {
-    title: 'Processus',
-    subtitle: 'Simple & Efficace',
-    steps: [
-      { title: '1. Signalement', desc: 'Vous signalez la panne (Tél/Online). Notre répartiteur priorise immédiatement.' },
-      { title: '2. Diagnose', desc: 'Analyse à distance ou sur site. Nous identifions le problème et trouvons les pièces.' },
-      { title: '3. Solution', desc: 'Réparation professionnelle, test et documentation numérique pour vos dossiers.' }
-    ],
-    digital_report: 'Rapports numériques disponibles immédiatement',
+    call_cta: 'Service-Desk',
+    digital_cta: 'Ouvrir un ticket',
   },
   calculator: {
-    badge: 'Analyse Impact Business',
-    title: 'Coût de l\'Inaction',
-    description: 'L\'arrêt coûte plus cher que la maintenance. Utilisez ce calculateur pour quantifier le risque financier.',
-    inputs: {
-      duration: 'Durée d\'arrêt',
-      rate: 'Taux horaire machine',
-      employees: 'Personnel affecté',
-      rate_hint: 'Moyenne CNC 5 axes: ~250-400 CHF/h',
-    },
+    ...de.calculator,
+    title: 'Coût de l\'arrêt',
+    description: 'Calculez le risque économique d\'un arrêt machine non planifié.',
     results: {
-      risk: 'Exposition au Risque',
-      production: 'Perte production',
-      personnel: 'Coût personnel',
-      cta: 'Minimiser le risque maintenant',
-      roi_title: 'Perspective ROI',
-      roi_desc: (months) => `Pour le coût de cet incident unique, vous pourriez financer environ ${months} mois de contrat de maintenance.`
-    },
-    severity: {
-      low: 'MODÉRÉ',
-      mid: 'SIGNIFICATIF',
-      high: 'CRITIQUE'
+        ...de.calculator.results,
+        risk: 'Perte estimée',
+        cta: 'Demander Service',
+        roi_desc: (months: number) => `L'amortissement est inférieur à ${months} mois.`,
     }
-  },
-  expertise: {
-    title: 'Rayon Opérationnel',
-    subtitle: 'Avantage Local',
-    headline_part1: 'Les autres sont dans les bouchons.',
-    headline_part2: 'Nous sommes déjà là.',
-    description: 'Notre QG à Lengnau (Solothurnstrasse 44) est stratégiquement placé. Nous garantissons une réponse en 300 secondes pour la zone de l\'aéroport de Grenchen. Ce n\'est pas du marketing, c\'est de la géographie.',
-    stat_time: { title: '300 Secondes Réponse', desc: 'Départ garanti ("Boots on the Ground") depuis Lengnau HQ.' },
-    stat_stock: { title: 'Stock pièces Lengnau', desc: 'Composants critiques pour Tornos & Fanuc direkt ab Lager verfügbar.' }
-  },
-  career: {
-    badge: 'Carrière',
-    title: 'Culture Apex',
-    subtitle: 'Plus que de la mécanique',
-    intro_title: 'L\'estime est notre moteur.',
-    intro_text: 'Un salaire supérieur à la moyenne est la base chez nous, pas l\'argument de vente. Nous sommes une entreprise moderne et tolérante qui mise sur le respect mutuel et la croissance commune. Chez nous, tu n\'es pas un numéro, mais le moteur de notre succès.',
-    values: [
-      { 
-        id: 'vacation', 
-        title: '6 Semaines Vacances', 
-        desc: 'Celui qui travaille dur doit bien récupérer. Nous garantissons 30 jours de congé pour tous.' 
-      },
-      { 
-        id: 'education', 
-        title: 'Apex Academy', 
-        desc: 'Nous payons tes formations continues (API, CNC, Management) intégralement.' 
-      },
-      { 
-        id: 'team', 
-        title: 'Esprit d\'Équipe', 
-        desc: 'Nous grandissons ensemble. Sortie d\'équipe annuelle (l\'an dernier : Canyoning au Tessin).' 
-      },
-      { 
-        id: 'tolerance', 
-        title: 'Moderne & Tolérant', 
-        desc: 'Nous vivons la diversité. Ton origine nous est égale, ta passion pour la technique compte.' 
-      }
-    ],
-    cta_init: 'Candidature spontanée',
-    positions_title: 'Postes Ouverts',
-    no_position: 'Pas de poste adapté ?',
-    apply_cta: 'Envoyez votre dossier',
-    modal: {
-      location: 'Lieu',
-      workload: 'Taux',
-      requirements: 'Votre profil',
-      benefits: 'Vos avantages',
-      apply_now: 'Postuler maintenant'
-    },
-    jobs: [
-      {
-        id: 'cnc-tech',
-        title: 'Technicien Service CNC (h/f)',
-        location: 'Région Bienne',
-        workload: '100%',
-        description: 'Vous êtes le pompier pour nos clients horlogers. Quand une Tornos s\'arrête, vous faites en sorte que les copeaux volent à nouveau.',
-        requirements: ['Polymécanicien/Automaticien.', 'Expérience machines CNC.', 'Connaissances Fanuc/Siemens.'],
-        benefits: ['6 semaines de vacances.', 'Véhicule top (usage privé).', 'Formation payée.']
-      },
-      {
-        id: 'retro-auto',
-        title: 'Automaticien Rétrofit (h/f)',
-        location: 'Région Soleure',
-        workload: '80-100%',
-        description: 'Vous redonnez vie aux vieilles machines. Vous développez de nouveaux concepts de commande et intégrez des solutions IoT.',
-        requirements: ['CFC Automaticien.', 'Connaissances EPLAN.', 'Programmation API (TIA).'],
-        benefits: ['Horaires flexibles.', 'Atelier moderne.', 'Événements d\'équipe.']
-      }
-    ]
-  },
-  trust_indicators: {
-    title: 'CONFIANCE PAR L\'EXPERTISE',
-    validated: { title: 'Rapports Validés', desc: 'Rapports de service numériques pour votre documentation QM.' },
-    laser: { title: 'Mesure Laser', desc: 'Utilisation d\'interféromètres modernes pour la réception géométrique.' },
-    discretion: { title: 'Discrétion', desc: 'Nous travaillons dans les secteurs sensibles. Votre IP est en sécurité.' }
-  },
-  contact: {
-    badge: 'Contact',
-    title: 'Prendre',
-    address_label: 'Adresse QG',
-    hotline_label: 'Hotline 24/7',
-    digital_label: 'Numérique',
-    status: 'État Système: Opérationnel',
-    form: {
-      reason_label: 'De quoi s\'agit-il ?',
-      name: 'Nom *',
-      company: 'Société *',
-      phone: 'Téléphone *',
-      details: 'Détails / Message',
-      submit: 'Envoyer la demande',
-      security: 'Chiffré SSL. Discrétion garantie.',
-      success_title: 'Demande Transmise',
-      success_desc: 'Notre répartiteur examine votre message. Nous vous contactons dans les 30 minutes.',
-      emergency: {
-        title: 'Mode Urgence',
-        desc: 'En cas d\'arrêt machine, vous avez besoin d\'aide immédiate. Ne perdez pas de temps avec des emails.',
-        priority: 'Priorité A+'
-      }
-    }
-  },
-  footer: {
-    brand_desc: 'Spécialisé dans la maintenance de machines-outils CNC et d\'installations salle blanche pour l\'horlogerie et la technique médicale.',
-    services_title: 'Services',
-    region_title: 'Rayon d\'action',
-    contact_title: 'Contact QG',
-    callback: 'Demander rappel',
-    rights: 'APEX INDUSTRIAL SWISS AG. TOUS SYSTÈMES OPÉRATIONNELS.'
   }
 };
 
 const SettingsContext = createContext<SettingsContextType | undefined>(undefined);
 
-export const SettingsProvider = ({ children }: PropsWithChildren<{}>) => {
+export const SettingsProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const [language, setLanguage] = useState<Language>('de');
   const [theme, setTheme] = useState<Theme>('dark');
   const [inquiryDraft, setInquiryDraft] = useState('');
 
-  // Initial Theme Check
   useEffect(() => {
-    const isDark = document.documentElement.classList.contains('dark');
-    setTheme(isDark ? 'dark' : 'light');
+    if (typeof window !== 'undefined') {
+        const savedTheme = localStorage.getItem('theme') as Theme;
+        if (savedTheme) setTheme(savedTheme);
+        else if (window.matchMedia('(prefers-color-scheme: dark)').matches) setTheme('dark');
+    }
   }, []);
 
-  const toggleTheme = () => {
-    const newTheme = theme === 'dark' ? 'light' : 'dark';
-    setTheme(newTheme);
-    if (newTheme === 'dark') {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+        localStorage.setItem('theme', theme);
+        if (theme === 'dark') {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
     }
-  };
+  }, [theme]);
 
-  const translations = language === 'de' ? de : fr;
+  const toggleTheme = () => setTheme(prev => prev === 'dark' ? 'light' : 'dark');
+
+  const t = language === 'de' ? de : fr;
+
+  const value = useMemo(() => ({
+    language, setLanguage, theme, toggleTheme, t, inquiryDraft, setInquiryDraft
+  }), [language, theme, t, inquiryDraft]);
 
   return (
-    <SettingsContext.Provider value={{ language, setLanguage, theme, toggleTheme, t: translations, inquiryDraft, setInquiryDraft }}>
+    <SettingsContext.Provider value={value}>
       {children}
     </SettingsContext.Provider>
   );
