@@ -1,3 +1,4 @@
+
 import { LucideIcon } from 'lucide-react';
 
 export interface ServiceItem {
@@ -38,6 +39,7 @@ export interface Translations {
     industries: string;
     expertise: string;
     career: string;
+    contact: string; // Added Contact
     emergency: string;
     status: string;
     location: string;
@@ -115,8 +117,23 @@ export interface Translations {
     headline_part1: string;
     headline_part2: string;
     description: string;
-    stat_time: { title: string; desc: string; };
-    stat_stock: { title: string; desc: string; };
+    metrics: {
+        response_title: string;
+        response_val: string;
+        response_sub: string;
+        hub_title: string;
+        hub_val: string;
+        hub_sub: string;
+    };
+    map_legend: {
+        express: string;
+        core: string;
+        extended: string;
+        network: string;
+        zone1_label: string;
+        zone2_label: string;
+        zone3_label: string;
+    };
   };
   career: {
     badge: string;

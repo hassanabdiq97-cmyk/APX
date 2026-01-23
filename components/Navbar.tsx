@@ -1,20 +1,158 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Menu, X, Moon, Sun, Phone, Home, Layers, UserCheck, AlertTriangle } from 'lucide-react';
+import { Menu, X, Moon, Sun, Phone, Home, Layers, UserCheck, AlertTriangle, Mail } from 'lucide-react';
 import { useSettings } from '../contexts/SettingsContext';
+import { ContactReason } from '../types';
+
+// --- HOLIDAY LOGIC (CANTON BERN) ---
+
+// 1. Calculate Easter Sunday (Meeus/Jones/Butcher's Algorithm)
+const getEasterDate = (year: number): Date => {
+  const a = year % 19;
+  const b = Math.floor(year / 100);
+  const c = year % 100;
+  const d = Math.floor(b / 4);
+  const e = b % 4;
+  const f = Math.floor((b + 8) / 25);
+  const g = Math.floor((b - f + 1) / 3);
+  const h = (19 * a + b - d - g + 15) % 30;
+  const i = Math.floor(c / 4);
+  const k = c % 4;
+  const l = (32 + 2 * e + 2 * i - h - k) % 7;
+  const m = Math.floor((a + 11 * h + 22 * l) / 451);
+  const month = Math.floor((h + l - 7 * m + 114) / 31);
+  const day = ((h + l - 7 * m + 114) % 31) + 1;
+  return new Date(year, month - 1, day);
+};
+
+// 2. Configurable Company Vacations (Betriebsferien)
+// Format: 'YYYY-MM-DD'. These override everything else.
+const COMPANY_HOLIDAYS = [
+  { start: '2025-12-24', end: '2026-01-02', label: 'BETRIEBSFERIEN' }, // Christmas Break
+  { start: '2025-07-21', end: '2025-08-01', label: 'SOMMERPAUSE' },   // Summer Break (Example)
+];
+
+// 3. Check for Holidays
+const getBernStatus = (date: Date, lang: string) => {
+  const year = date.getFullYear();
+  const month = date.getMonth(); // 0-11
+  const day = date.getDate();
+  const weekDay = date.getDay(); // 0 = Sun
+  const hour = date.getHours();
+  const minute = date.getMinutes();
+
+  // A. Check Company Holidays (Betriebsferien)
+  const dateStr = date.toISOString().split('T')[0];
+  for (const holiday of COMPANY_HOLIDAYS) {
+    if (dateStr >= holiday.start && dateStr <= holiday.end) {
+       return { 
+         status: lang === 'de' ? `${holiday.label} // PIKETT` : 'VACANCES // URGENCE', 
+         color: 'text-orange-500', 
+         bg: 'bg-orange-500', 
+         glow: 'shadow-[0_0_8px_#f97316]' 
+       };
+    }
+  }
+
+  // B. Fixed Bernese Holidays
+  const isJan1 = month === 0 && day === 1;  // Neujahr
+  const isJan2 = month === 0 && day === 2;  // Berchtoldstag (Bern specific)
+  const isAug1 = month === 7 && day === 1;  // Bundesfeier
+  const isDec25 = month === 11 && day === 25; // Weihnachten
+  const isDec26 = month === 11 && day === 26; // Stephanstag
+
+  if (isJan1 || isJan2 || isAug1 || isDec25 || isDec26) {
+    return { 
+      status: lang === 'de' ? 'FEIERTAG // PIKETT' : 'JOUR FÉRIÉ // URGENCE', 
+      color: 'text-safety', 
+      bg: 'bg-safety', 
+      glow: 'shadow-[0_0_12px_#FF3300]' 
+    };
+  }
+
+  // C. Variable Holidays (Easter based)
+  const easter = getEasterDate(year);
+  
+  // Helper to compare dates ignoring time
+  const isSameDate = (d1: Date, d2: Date) => 
+    d1.getDate() === d2.getDate() && d1.getMonth() === d2.getMonth();
+
+  const goodFriday = new Date(easter); goodFriday.setDate(easter.getDate() - 2);
+  const easterMonday = new Date(easter); easterMonday.setDate(easter.getDate() + 1);
+  const ascension = new Date(easter); ascension.setDate(easter.getDate() + 39); // Auffahrt
+  const whitMonday = new Date(easter); whitMonday.setDate(easter.getDate() + 50); // Pfingstmontag
+
+  if (isSameDate(date, goodFriday) || isSameDate(date, easterMonday) || isSameDate(date, ascension) || isSameDate(date, whitMonday)) {
+    return { 
+        status: lang === 'de' ? 'FEIERTAG // PIKETT' : 'JOUR FÉRIÉ // URGENCE', 
+        color: 'text-safety', 
+        bg: 'bg-safety', 
+        glow: 'shadow-[0_0_12px_#FF3300]' 
+    };
+  }
+
+  // D. Standard Weekend
+  if (weekDay === 0 || weekDay === 6) {
+    return { 
+      status: lang === 'de' ? 'WOCHENENDE // PIKETT' : 'WEEK-END // URGENCE', 
+      color: 'text-safety', 
+      bg: 'bg-safety', 
+      glow: 'shadow-[0_0_12px_#FF3300]' 
+    };
+  }
+
+  // E. Office Hours (Mon-Fri, 07:30 - 12:00 & 13:00 - 17:00)
+  // Simplified to 07:30 - 17:00 continuous for display simplicity, or split if needed.
+  const isMorning = (hour > 7 || (hour === 7 && minute >= 30)) && hour < 12;
+  const isAfternoon = hour >= 13 && hour < 17;
+  const isLunch = hour === 12;
+
+  if (isMorning || isAfternoon) {
+    return { 
+      status: lang === 'de' ? 'BÜRO BESETZT' : 'BUREAU OUVERT', 
+      color: 'text-emerald-500', 
+      bg: 'bg-emerald-500', 
+      glow: 'shadow-[0_0_8px_rgba(16,185,129,0.5)]'
+    };
+  }
+  
+  if (isLunch) {
+     return { 
+      status: lang === 'de' ? 'MITTAGSPAUSE' : 'PAUSE MIDI', 
+      color: 'text-yellow-500', 
+      bg: 'bg-yellow-500', 
+      glow: 'shadow-[0_0_8px_rgba(234,179,8,0.5)]'
+    };
+  }
+
+  // F. Night / Off-Hours
+  return { 
+      status: lang === 'de' ? '24/7 PIKETT AKTIV' : 'URGENCE 24/7 ACTIVE', 
+      color: 'text-safety', 
+      bg: 'bg-safety', 
+      glow: 'shadow-[0_0_12px_#FF3300]' 
+  };
+};
+
 
 export const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState('hero');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [status, setStatus] = useState({ label: 'SYSTEM CHECK...', color: 'text-slate-400', bg: 'bg-slate-400' });
-  const { language, setLanguage, theme, toggleTheme, t } = useSettings();
+  
+  const { language, setLanguage, theme, toggleTheme, t, setActiveReason } = useSettings();
 
-  // Scroll Listener for Navbar appearance and Active Section detection
+  const [status, setStatus] = useState({ 
+    label: 'SYSTEM CHECK...', 
+    color: 'text-slate-400', 
+    bg: 'bg-slate-400',
+    glow: 'shadow-[0_0_5px_currentColor]'
+  });
+
+  // Scroll Listener
   useEffect(() => {
     let ticking = false;
-
     const handleScroll = () => {
       if (!ticking) {
         window.requestAnimationFrame(() => {
@@ -26,7 +164,6 @@ export const Navbar: React.FC = () => {
             const element = document.getElementById(section);
             if (element) {
               const rect = element.getBoundingClientRect();
-              // Logic: Section is active if it covers the middle of the screen
               if (rect.top <= window.innerHeight / 2 && rect.bottom >= window.innerHeight / 2) {
                  setActiveSection(section);
                  break; 
@@ -38,38 +175,25 @@ export const Navbar: React.FC = () => {
         ticking = true;
       }
     };
-
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Logic: Real-time Availability (Office vs Pikett)
+  // Update Status Interval
   useEffect(() => {
-    const updateStatus = () => {
+    const update = () => {
       const now = new Date();
-      const day = now.getDay();
-      const hour = now.getHours();
-      
-      const isOfficeHours = day >= 1 && day <= 5 && hour >= 7 && hour < 17;
-
-      if (isOfficeHours) {
-        setStatus({ 
-          label: language === 'de' ? 'BÜRO BESETZT' : 'BUREAU OUVERT', 
-          color: 'text-emerald-500', 
-          bg: 'bg-emerald-500' 
-        });
-      } else {
-        setStatus({ 
-          label: language === 'de' ? '24/7 PIKETT AKTIV' : 'URGENCE 24/7 ACTIVE', 
-          color: 'text-safety', 
-          bg: 'bg-safety' 
-        });
-      }
+      const currentStatus = getBernStatus(now, language);
+      setStatus({
+        label: currentStatus.status,
+        color: currentStatus.color,
+        bg: currentStatus.bg,
+        glow: currentStatus.glow
+      });
     };
     
-    updateStatus();
-    const interval = setInterval(updateStatus, 60000);
-
+    update();
+    const interval = setInterval(update, 60000); // Check every minute
     return () => clearInterval(interval);
   }, [language]);
 
@@ -80,6 +204,19 @@ export const Navbar: React.FC = () => {
         el.scrollIntoView({ behavior: 'smooth' });
     }
   };
+
+  const handleEmergencyClick = (e: React.MouseEvent) => {
+      e.preventDefault();
+      setActiveReason(ContactReason.EMERGENCY);
+      scrollTo('kontakt');
+  };
+
+  const navItems = [
+    { id: 'leistungen', label: t.nav.services },
+    { id: 'branchen', label: t.nav.industries },
+    { id: 'karriere', label: t.nav.career },
+    { id: 'kontakt', label: t.nav.contact }
+  ];
 
   return (
     <>
@@ -102,7 +239,7 @@ export const Navbar: React.FC = () => {
              <div className="flex flex-col">
                <span className="font-bold text-slate-900 dark:text-white uppercase text-xs leading-none tracking-tight">Apex Industrial</span>
                <div className="flex items-center gap-2 mt-1">
-                 <span className={`w-1.5 h-1.5 rounded-full ${status.bg} animate-pulse shadow-[0_0_5px_currentColor]`}></span>
+                 <span className={`w-1.5 h-1.5 rounded-full ${status.bg} ${status.glow} animate-pulse`}></span>
                  <span className={`text-[8px] font-mono tracking-[0.1em] uppercase ${status.color} font-bold`}>
                    {status.label}
                  </span>
@@ -111,22 +248,34 @@ export const Navbar: React.FC = () => {
           </div>
 
           {/* Desktop Nav Links */}
-          <nav className="hidden lg:flex items-center gap-10" aria-label="Desktop Navigation">
-            {[{ id: 'leistungen', label: t.nav.services }, { id: 'branchen', label: t.nav.industries }, { id: 'karriere', label: t.nav.career }].map(item => (
+          <nav className="hidden lg:flex items-center gap-8" aria-label="Desktop Navigation">
+            {navItems.map(item => (
               <button key={item.id} onClick={() => scrollTo(item.id)} className={`text-[11px] font-black uppercase tracking-[0.15em] transition-all relative group ${activeSection === item.id ? 'text-safety' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'}`}>
                 {item.label}
                 <span className={`absolute -bottom-2 left-0 h-[2px] bg-safety transition-all duration-300 ${activeSection === item.id ? 'w-full' : 'w-0 group-hover:w-full'}`}></span>
               </button>
             ))}
+
+            {/* EMERGENCY BUTTON (GLOWING RED) - NOW SCROLLS TO CONTACT WITH STATE */}
+            <button 
+              onClick={handleEmergencyClick}
+              className="flex items-center gap-2 px-4 py-2 bg-safety/5 border border-safety/50 text-safety font-bold text-[11px] uppercase tracking-widest rounded-sm hover:bg-safety hover:text-white transition-all duration-300 shadow-[0_0_15px_rgba(255,51,0,0.2)] hover:shadow-[0_0_20px_rgba(255,51,0,0.6)] ml-4"
+            >
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-safety opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-safety"></span>
+                </span>
+                {t.nav.emergency}
+            </button>
             
             {/* Language & Theme Switcher */}
-            <div className="flex items-center gap-2 text-[10px] font-bold font-mono ml-6 bg-slate-100 dark:bg-white/5 p-1 rounded-sm border border-slate-200 dark:border-white/5">
+            <div className="flex items-center gap-2 text-[10px] font-bold font-mono ml-2 bg-slate-100 dark:bg-white/5 p-1 rounded-sm border border-slate-200 dark:border-white/5">
               <button onClick={() => setLanguage('de')} className={`px-3 py-1.5 transition-all rounded-sm ${language === 'de' ? 'bg-white dark:bg-slate-800 text-safety shadow-sm' : 'text-slate-400 hover:text-slate-600 dark:hover:text-slate-300'}`}>DE</button>
               <button onClick={() => setLanguage('fr')} className={`px-3 py-1.5 transition-all rounded-sm ${language === 'fr' ? 'bg-white dark:bg-slate-800 text-safety shadow-sm' : 'text-slate-400 hover:text-slate-600 dark:hover:text-slate-300'}`}>FR</button>
             </div>
             <button 
               onClick={toggleTheme} 
-              className="p-2.5 bg-slate-100 dark:bg-white/5 text-slate-500 hover:text-safety transition-colors rounded-sm ml-2 border border-slate-200 dark:border-white/5"
+              className="p-2.5 bg-slate-100 dark:bg-white/5 text-slate-500 hover:text-safety transition-colors rounded-sm border border-slate-200 dark:border-white/5"
             >
                {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
             </button>
@@ -162,7 +311,7 @@ export const Navbar: React.FC = () => {
             </button>
           </div>
           
-          {/* CENTER FAB - BREAKING OUT (The "Red Button") */}
+          {/* CENTER FAB - BREAKING OUT (The "Red Button") - DIRECT CALL ON MOBILE */}
           <div className="absolute left-1/2 -translate-x-1/2 -top-6">
              <a 
                href="tel:+41321234567" 
@@ -185,9 +334,10 @@ export const Navbar: React.FC = () => {
               <span className="text-[9px] font-bold uppercase tracking-wider mt-1 opacity-80">Jobs</span>
             </button>
             
+            {/* Contact Button (Standard) */}
             <button onClick={() => scrollTo('kontakt')} className={`flex flex-col items-center justify-center w-14 h-14 rounded-full transition-all active:scale-95 active:bg-slate-100 dark:active:bg-white/5 ${activeSection === 'kontakt' ? 'text-safety' : 'text-slate-400 dark:text-slate-500'}`}>
-              <AlertTriangle size={24} strokeWidth={activeSection === 'kontakt' ? 2.5 : 1.5} />
-              <span className="text-[9px] font-bold uppercase tracking-wider mt-1 opacity-80">Alarm</span>
+              <Mail size={24} strokeWidth={activeSection === 'kontakt' ? 2.5 : 1.5} />
+              <span className="text-[9px] font-bold uppercase tracking-wider mt-1 opacity-80">{t.nav.contact}</span>
             </button>
           </div>
 

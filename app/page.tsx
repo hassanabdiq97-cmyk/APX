@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { CNCMachineMonitor } from '../components/CNCMachineMonitor';
 import { ArrowRight, ShieldCheck } from 'lucide-react';
@@ -24,13 +23,13 @@ export default function Page() {
 
           <h1 className="text-5xl md:text-7xl font-black text-white tracking-tighter leading-[0.9]">
             SCHWEIZER <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-500">PRÄZISION</span> <br />
-            <span className="text-safety drop-shadow-[0_0_20px_rgba(255,51,0,0.5)]">BESCHÜTZEN.</span>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-500">PRODUKTION</span> <br />
+            <span className="text-safety drop-shadow-[0_0_20px_rgba(255,51,0,0.5)]">SICHERN.</span>
           </h1>
 
           <p className="text-lg text-gray-400 font-light max-w-xl leading-relaxed">
-            Instandhaltung für die Uhrenindustrie und Medizintechnik. 
-            Wir minimieren Ausfallzeiten in der Region <span className="text-white font-medium">Biel-Grenchen-Solothurn</span> durch prädiktive Wartung und 24/7 Pikett.
+            Industrielle Instandhaltung und Maschinen-Montage. 
+            Wir minimieren Ausfallzeiten in der Region <span className="text-white font-medium">Biel-Grenchen-Solothurn</span> durch fachgerechte Wartung, Montage und 24/7 Service.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 pt-4">
@@ -47,7 +46,7 @@ export default function Page() {
           </div>
         </div>
 
-        {/* Right: The CNC Simulator */}
+        {/* Right: The Machine Monitor (Generic Industrial Context) */}
         <div className="w-full perspective-1000">
           <CNCMachineMonitor />
         </div>
@@ -58,9 +57,9 @@ export default function Page() {
       <div className="absolute bottom-0 w-full border-t border-white/5 bg-black/50 py-3 overflow-hidden">
          <div className="flex whitespace-nowrap gap-12 text-xs font-mono text-gray-600 uppercase tracking-[0.2em] animate-marquee">
             <span>+++ System Status: Operational +++</span>
-            <span>Tornos Support Active</span>
-            <span>Bumotec Diagnostics Ready</span>
-            <span>Willemin-Macodel Maintenance Standby</span>
+            <span>Maintenance Team Ready</span>
+            <span>Assembly Services Active</span>
+            <span>24/7 Pikett Standby</span>
             <span>+++ System Status: Operational +++</span>
          </div>
       </div>

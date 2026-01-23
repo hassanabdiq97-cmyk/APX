@@ -82,16 +82,6 @@ const AppContent = () => {
 
       {/* 12. Footer */}
       <Footer />
-
-      {/* Sticky Mobile Emergency Button */}
-      <div className="fixed bottom-0 left-0 w-full z-50 md:hidden pointer-events-none">
-        <div className="bg-gradient-to-t from-slate-50/90 dark:from-slate-950/90 to-transparent pb-safe pt-8">
-           <a href="tel:+41321234567" className="pointer-events-auto flex items-center justify-center gap-3 bg-safety w-full py-4 text-white font-black uppercase tracking-widest text-sm shadow-[0_0_30px_rgba(255,68,0,0.5)]">
-              <span className="animate-pulse">●</span> PIKETT 24/7 RUFEN
-           </a>
-        </div>
-      </div>
-
     </div>
   );
 };

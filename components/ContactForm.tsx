@@ -7,7 +7,7 @@ import { ContactReason } from '../types';
 import { useSettings } from '../contexts/SettingsContext';
 
 export const ContactForm: React.FC = () => {
-  const { t, inquiryDraft, setInquiryDraft } = useSettings();
+  const { t, inquiryDraft, setInquiryDraft, activeReason, setActiveReason } = useSettings();
   const [formData, setFormData] = useState({
     name: '', company: '', email: '', phone: '', reason: ContactReason.MAINTENANCE, message: ''
   });
@@ -21,6 +21,14 @@ export const ContactForm: React.FC = () => {
     }
   }, [inquiryDraft]);
 
+  // Listen for global reason change (e.g. from Navbar Emergency button)
+  useEffect(() => {
+    if (activeReason) {
+        setFormData(prev => ({ ...prev, reason: activeReason }));
+        // We don't clear activeReason immediately to keep the state persistent during this view
+    }
+  }, [activeReason]);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (formData.reason === ContactReason.EMERGENCY) return;
@@ -31,11 +39,18 @@ export const ContactForm: React.FC = () => {
         setIsSubmitting(false);
         setIsSuccess(true);
         setInquiryDraft(''); 
+        if (activeReason) setActiveReason(null);
     }, 1500);
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleReasonChange = (r: ContactReason) => {
+      setFormData({...formData, reason: r});
+      // If user manually changes tabs, we might want to clear global activeReason to avoid sticky behavior if they navigate away and back
+      if (activeReason) setActiveReason(null);
   };
 
   return (
@@ -132,7 +147,7 @@ export const ContactForm: React.FC = () => {
                                  <button 
                                    type="button"
                                    key={r}
-                                   onClick={() => setFormData({...formData, reason: r})}
+                                   onClick={() => handleReasonChange(r)}
                                    className={`p-3 text-[10px] uppercase font-bold tracking-wider border transition-all text-center rounded-sm relative overflow-hidden ${
                                      formData.reason === r 
                                        ? r === ContactReason.EMERGENCY 

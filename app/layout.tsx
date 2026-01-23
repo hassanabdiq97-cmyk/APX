@@ -24,13 +24,13 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: 'APX Industrial | CNC Instandhaltung & Pikett Schweiz',
-  description: 'Ihr Partner für CNC-Reparatur, Spindel-Service und Reinraum-Instandhaltung. 24/7 Pikett für Uhrenindustrie & Medtech in Grenchen, Biel, Solothurn.',
-  keywords: ['CNC Instandhaltung', 'Spindel Service', 'Pikett Dienst', 'Industriemechanik', 'Tornos Service', 'Biel', 'Grenchen', 'Solothurn'],
+  title: 'APX Industrial | Instandhaltung & Montage Schweiz',
+  description: 'Ihr Partner für industrielle Instandhaltung, Maschinen-Montage und technischen Service. 24/7 Pikett für Produktionsbetriebe in Grenchen, Biel, Solothurn.',
+  keywords: ['Industrie Instandhaltung', 'Maschinen Montage', 'Anlagenservice', 'Industriemechanik', 'Wartung', 'Biel', 'Grenchen', 'Solothurn', 'Betriebsmechaniker'],
   manifest: '/manifest.json', // Best practice placeholder
   openGraph: {
-    title: 'APX Industrial | High-Performance Instandhaltung',
-    description: '24/7 Pikett für die Schweizer Uhrenindustrie und Medtech.',
+    title: 'APX Industrial | Instandhaltung & Montage',
+    description: 'Wir sichern Ihre Produktion. Montage, Wartung und Service für Industrieanlagen.',
     locale: 'de_CH',
     type: 'website',
   },

@@ -1,11 +1,11 @@
 'use client';
 
 import React from 'react';
-import { Watch, Stethoscope, Factory, Flame } from 'lucide-react';
+import { Watch, Stethoscope, Factory, Layers } from 'lucide-react';
 import { SectionHeader } from './SectionHeader';
 import { useSettings } from '../contexts/SettingsContext';
 
-const icons = [Watch, Stethoscope, Factory, Flame];
+const icons = [Watch, Stethoscope, Factory, Layers];
 
 export const Industries: React.FC = () => {
   const { t } = useSettings();
