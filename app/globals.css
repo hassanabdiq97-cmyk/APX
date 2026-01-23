@@ -1,15 +1,15 @@
 @import "tailwindcss";
 
 @theme {
-  /* --- SWISS HMI PALETTE --- */
+  /* --- SWISS INDUSTRIAL PALETTE --- */
   --color-apex-bg: #0b0c10;
   --color-apex-panel: #1f2833;
   
-  /* UPDATED: Absolute Unification */
+  /* SIGNAL COLORS */
   --color-apex-cyan: #00f3ff;
   --color-apex-cyan-glow: #00f3ff;
   
-  /* UPDATED: Standardized Emergency Red */
+  /* SAFETY & WARNING */
   --color-apex-red: #FF3300; 
   --color-apex-dim: #c5c6c7;
   
@@ -19,7 +19,7 @@
 
   /* --- ANIMATIONS --- */
   --animate-scanline: scanline 2s linear infinite;
-  --animate-ticker: ticker 25s linear infinite;
+  --animate-ticker: ticker 30s linear infinite;
   --animate-laser-scan: laserScan 3s ease-in-out infinite;
   
   @keyframes scanline {
@@ -56,7 +56,7 @@
     text-shadow: 0 0 10px rgba(0, 243, 255, 0.5);
   }
   
-  /* NEW: Industrial Glass Effect */
+  /* INDUSTRIAL GLASS PANEL */
   .glass-panel-tech {
     background: rgba(11, 12, 16, 0.7);
     backdrop-filter: blur(12px);
@@ -66,21 +66,19 @@
       inset 0 0 0 1px rgba(255, 255, 255, 0.05);
   }
 
-  /* Theme-aware grid pattern */
+  /* TECHNICAL GRID PATTERN */
   .bg-grid-pattern {
     background-size: 40px 40px;
     background-image: linear-gradient(to right, rgba(0, 0, 0, 0.03) 1px, transparent 1px),
                       linear-gradient(to bottom, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
   }
 
-  /* Dark mode override via parent class or media query handled by tailwind 'dark:' variant usually, 
-     but here we use a specific selector strategy if utilizing the class directly */
   :is(.dark .bg-grid-pattern) {
     background-image: linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
                       linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
   }
   
-  /* Custom Safety Color Overrides for specific classes if needed */
+  /* SAFETY OVERRIDES */
   .text-safety {
     color: var(--color-apex-red);
   }
@@ -89,5 +87,8 @@
   }
   .border-safety {
     border-color: var(--color-apex-red);
+  }
+  .text-glow-safety\/20 {
+    text-shadow: 0 0 20px rgba(255, 51, 0, 0.2);
   }
 }
